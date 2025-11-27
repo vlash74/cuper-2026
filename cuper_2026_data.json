@@ -366,5 +366,28 @@
     "levelDisplay": "Internationell breddcup",
     "accommodation": "Hotell/boendepaket via arrangör",
     "notes": ""
+  },
+    {
+    "id": "kokkola-cup",
+    "name": "Kokkola Cup",
+    "url": "https://www.kokkolacup.fi/",
+    "country": "Finland",
+    "city": "Kokkola",
+    "month": 7,
+    "dateText": "Juli (exakta datum 2026 ej publicerade ännu)",
+    "startDate": null,
+    "endDate": null,
+    "registrationDeadlineText": "Anmälan till Kokkola Cup 2026 är öppen – sista anmälningsdatum anges på turneringens sida",
+    "registrationDeadline": null,
+    "playerCostText": "Turnerings- och deltagaravgifter i EUR/finländsk valuta anges i cupens avgiftsinformation; prisnivå liknande större nordiska cuper",
+    "playerCostEurApprox": null,
+    "leaderCostText": "Ledare omfattas normalt av samma deltagaravgift som spelare i paketlösningar",
+    "leaderCostEurApprox": null,
+    "teamFeeText": "Lagavgift per lag enligt turneringsinfo (historiskt en större internationell turnering med flera hundra lag)",
+    "teamFeeEurApprox": null,
+    "level": "mix",
+    "levelDisplay": "En av Finlands största juniorcuper, mix bredd/elit med internationella inslag",
+    "accommodation": "Boendepaket i Kokkola (skolor, lokala boenden, hotell) samt eget boende-alternativ",
+    "notes": "Exakta spel­datum för 2026 är inte listade vid sökningstillfället, men cupen spelas traditionellt fyra dagar i mitten av juli. Kolla officiell sida för uppdaterat datum."
   }
 ]
