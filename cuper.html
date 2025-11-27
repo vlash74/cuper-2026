@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8" />
+  <title>Fotbollscuper 2026 – P2011/U15</title>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      margin: 20px;
+      background: #f5f5f5;
+    }
+    h1 {
+      margin-bottom: 0;
+    }
+    small {
+      color: #555;
+    }
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      padding: 12px;
+      background: #ffffff;
+      border-radius: 8px;
+      margin: 16px 0;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .filters label {
+      font-size: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .filters select,
+    .filters input {
+      padding: 4px 6px;
+      font-size: 14px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #ffffff;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+    }
+    th, td {
+      padding: 8px 10px;
+      border-bottom: 1px solid #eee;
+      font-size: 13px;
+      vertical-align: top;
+    }
+    th {
+      background: #fafafa;
+      position: sticky;
+      top: 0;
+      z-index: 1;
+      cursor: pointer;
+      user-select: none;
+    }
+    th.sortable::after {
+      content: " ⇅";
+      font-size: 11px;
+      color: #888;
+    }
+    th.sorted-asc::after {
+      content: " ↑";
+      font-size: 11px;
+      color: #000;
+    }
+    th.sorted-desc::after {
+      content: " ↓";
+      font-size: 11px;
+      color: #000;
+    }
+    tr:nth-child(even) td {
+      background: #fcfcfc;
+    }
+    .level-tag {
+      display: inline-block;
+      padding: 2px 6px;
+      border-radius: 999px;
+      font-size: 11px;
+      background: #eef;
+    }
+    .level-elite { background: #ffe5e5; }
+    .level-bredd { background: #e5ffe8; }
+    .level-mix   { background: #fff7e0; }
+    .note {
+      font-size: 12px;
+      color: #666;
+      margin-top: 8px;
+      max-width: 900px;
+    }
+    .hidden {
+      display: none;
+    }
+    a {
+      color: #0b66c3;
+    }
+  </style>
+</head>
+<body>
+  <h1>Fotbollscuper i Europa 2026 – P2011/U15</h1>
+  <small>Version 2.0 – data från JSON, med filter &amp; sortering</small>
+
+  <div class="filters">
+    <label>
+      Månad (startdatum)
+      <select id="filterMonth">
+        <option value="">Alla</option>
+        <option value="2">Februari</option>
+        <option value="3">Mars</option>
+        <option value="4">April</option>
+        <option value="5">Maj</option>
+        <option value="6">Juni</option>
+        <option value="7">Juli</option>
+        <option value="8">Augusti</option>
+        <option value="9">September</option>
+        <option value="10">Oktober</option>
+      </select>
+    </label>
+
+    <label>
+      Land
+      <select id="filterCountry">
+        <option value="">Alla</option>
+        <option value="Sverige">Sverige</option>
+        <option value="Norge">Norge</option>
+        <option value="Finland">Finland</option>
+        <option value="Danmark">Danmark</option>
+        <option value="Spanien">Spanien</option>
+        <option value="Frankrike">Frankrike</option>
+        <option value="Nederländerna">Nederländerna</option>
+        <option value="Lettland">Lettland</option>
+        <option value="Belgien">Belgien</option>
+        <option value="Italien">Italien</option>
+        <option value="Portugal">Portugal</option>
+      </select>
+    </label>
+
+    <label>
+      Nivå
+      <select id="filterLevel">
+        <option value="">Alla</option>
+        <option value="bredd">Bredd</option>
+        <option value="mix">Mix bredd/elit</option>
+        <option value="elite">Elite/akademi</option>
+      </select>
+    </label>
+
+    <label>
+      Max kostnad per spelare (ca, numeriskt)
+      <input type="number" id="filterMaxCost" min="0" step="10" placeholder="t.ex. 400" />
+    </label>
+
+    <label>
+      Fritext (cupnamn/stad)
+      <input type="text" id="filterSearch" placeholder="t.ex. Gothia, Barcelona..." />
+    </label>
+  </div>
+
+  <table id="cupTable">
+    <thead>
+      <tr>
+        <th class="sortable" data-sort-key="name">Cup</th>
+        <th class="sortable" data-sort-key="startDate">Datum 2026</th>
+        <th class="sortable" data-sort-key="registrationDeadline">Sista anmälan*</th>
+        <th class="sortable" data-sort-key="playerCostEurApprox">Kostnad / spelare (ca)</th>
+        <th class="sortable" data-sort-key="leaderCostEurApprox">Kostnad / ledare (ca)</th>
+        <th class="sortable" data-sort-key="teamFeeEurApprox">Lagavgift / registrering</th>
+        <th class="sortable" data-sort-key="level">Nivå (tolkning)</th>
+        <th>Boendeform</th>
+        <th class="sortable" data-sort-key="country">Land</th>
+        <th class="sortable" data-sort-key="city">Stad/område</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Fylls via JavaScript -->
+    </tbody>
+  </table>
+
+  <p class="note">
+    * Sista anmälningsdatum och kostnader ändras ofta år till år och var inte
+    alltid publicerade för 2026 när denna fil skapades. Använd tabellen som
+    utgångspunkt och dubbelkolla alltid på cupens officiella webbsida eller hos
+    din researrangör innan ni bestämmer er eller gör budget.
+  </p>
+
+  <script>
+    const monthSelect = document.getElementById("filterMonth");
+    const countrySelect = document.getElementById("filterCountry");
+    const levelSelect = document.getElementById("filterLevel");
+    const maxCostInput = document.getElementById("filterMaxCost");
+    const searchInput = document.getElementById("filterSearch");
+    const tableBody = document.querySelector("#cupTable tbody");
+    const headerCells = document.querySelectorAll("#cupTable thead th.sortable");
+
+    let cups = [];
+    let currentSort = {
+      key: "startDate",
+      direction: "asc", // eller "desc"
+    };
+
+    function normalize(str) {
+      return (str || "").toLowerCase().trim();
+    }
+
+    function parseDate(value) {
+      if (!value) return null;
+      const d = new Date(value);
+      return isNaN(d.getTime()) ? null : d;
+    }
+
+    function applyFilters(cupsArray) {
+      const month = monthSelect.value;
+      const country = countrySelect.value;
+      const level = levelSelect.value;
+      const maxCost = maxCostInput.value ? parseFloat(maxCostInput.value) : null;
+      const search = normalize(searchInput.value);
+
+      return cupsArray.filter(cup => {
+        if (month && String(cup.month) !== month) return false;
+        if (country && cup.country !== country) return false;
+        if (level && cup.level !== level) return false;
+
+        if (maxCost !== null) {
+          const cost = typeof cup.playerCostEurApprox === "number" ? cup.playerCostEurApprox : null;
+          if (cost === null || cost > maxCost) return false;
+        }
+
+        if (search) {
+          const text = normalize(
+            `${cup.name} ${cup.city || ""} ${cup.country || ""} ${cup.dateText || ""}`
+          );
+          if (!text.includes(search)) return false;
+        }
+
+        return true;
+      });
+    }
+
+    function compareValues(a, b, key) {
+      const va = a[key];
+      const vb = b[key];
+
+      // datum
+      if (key === "startDate" || key === "registrationDeadline") {
+        const da = parseDate(va);
+        const db = parseDate(vb);
+        if (!da && !db) return 0;
+        if (!da) return 1;
+        if (!db) return -1;
+        return da - db;
+      }
+
+      // tal
+      if (typeof va === "number" || typeof vb === "number") {
+        const na = typeof va === "number" ? va : Infinity;
+        const nb = typeof vb === "number" ? vb : Infinity;
+        if (na === nb) return 0;
+        return na < nb ? -1 : 1;
+      }
+
+      // sträng
+      const sa = normalize(String(va || ""));
+      const sb = normalize(String(vb || ""));
+      if (sa === sb) return 0;
+      return sa < sb ? -1 : 1;
+    }
+
+    function sortCups(cupsArray) {
+      const sorted = [...cupsArray].sort((a, b) => {
+        const cmp = compareValues(a, b, currentSort.key);
+        return currentSort.direction === "asc" ? cmp : -cmp;
+      });
+      return sorted;
+    }
+
+    function levelClass(level) {
+      if (level === "elite") return "level-elite";
+      if (level === "bredd") return "level-bredd";
+      if (level === "mix") return "level-mix";
+      return "";
+    }
+
+    function renderTable() {
+      const filtered = applyFilters(cups);
+      const sorted = sortCups(filtered);
+
+      tableBody.innerHTML = "";
+
+      sorted.forEach(cup => {
+        const tr = document.createElement("tr");
+
+        tr.innerHTML = `
+          <td>
+            <strong>${cup.name}</strong><br />
+            ${
+              cup.url
+                ? `<a href="${cup.url}" target="_blank">Länk</a>`
+                : ""
+            }
+          </td>
+          <td>${cup.dateText || ""}</td>
+          <td>${cup.registrationDeadlineText || ""}</td>
+          <td>${cup.playerCostText || ""}</td>
+          <td>${cup.leaderCostText || ""}</td>
+          <td>${cup.teamFeeText || ""}</td>
+          <td>
+            ${
+              cup.level
+                ? `<span class="level-tag ${levelClass(cup.level)}">${cup.levelDisplay || ""}</span>`
+                : ""
+            }
+          </td>
+          <td>${cup.accommodation || ""}</td>
+          <td>${cup.country || ""}</td>
+          <td>${cup.city || ""}</td>
+        `;
+
+        tableBody.appendChild(tr);
+      });
+    }
+
+    function setHeaderSortStyles() {
+      headerCells.forEach(th => {
+        th.classList.remove("sorted-asc", "sorted-desc");
+        const key = th.getAttribute("data-sort-key");
+        if (key === currentSort.key) {
+          th.classList.add(currentSort.direction === "asc" ? "sorted-asc" : "sorted-desc");
+        }
+      });
+    }
+
+    function initSorting() {
+      headerCells.forEach(th => {
+        th.addEventListener("click", () => {
+          const key = th.getAttribute("data-sort-key");
+          if (!key) return;
+
+          if (currentSort.key === key) {
+            currentSort.direction = currentSort.direction === "asc" ? "desc" : "asc";
+          } else {
+            currentSort.key = key;
+            currentSort.direction = "asc";
+          }
+
+          setHeaderSortStyles();
+          renderTable();
+        });
+      });
+      setHeaderSortStyles();
+    }
+
+    function initFilters() {
+      [monthSelect, countrySelect, levelSelect, maxCostInput, searchInput].forEach(el => {
+        el.addEventListener("input", renderTable);
+        el.addEventListener("change", renderTable);
+      });
+    }
+
+    async function loadData() {
+      try {
+        const response = await fetch("cuper_2026_data.json");
+        cups = await response.json();
+        renderTable();
+      } catch (err) {
+        console.error("Kunde inte ladda JSON-data:", err);
+        tableBody.innerHTML = `
+          <tr>
+            <td colspan="10" style="color:red;">
+              Kunde inte ladda cuper från <code>cuper_2026_data.json</code>. Kontrollera filnamn och sökväg.
+            </td>
+          </tr>
+        `;
+      }
+    }
+
+    initSorting();
+    initFilters();
+    loadData();
+  </script>
+</body>
+</html>
