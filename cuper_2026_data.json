@@ -21,5 +21,28 @@
     "levelDisplay": "Mix bredd/elit, stor internationell",
     "accommodation": "Skola, hotell eller eget boende via arrangör",
     "notes": ""
+  },
+  {
+    "id": "cup-no1-frederikshavn",
+    "name": "Cup No.1",
+    "url": "https://www.cupno1.com/",
+    "country": "Danmark",
+    "city": "Frederikshavn",
+    "month": 7,
+    "dateText": "6–11 juli",
+    "startDate": "2026-07-06",
+    "endDate": "2026-07-11",
+    "registrationDeadlineText": "Registreringsdeadline runt 15 maj 2026 (enligt turneringens viktiga datum).",
+    "registrationDeadline": "2026-05-15",
+    "playerCostText": "Paketpriser från ca 268 € per person (inkl. boende/mat) via resepartners.",
+    "playerCostEurApprox": 268,
+    "leaderCostText": "Ledare följer normalt samma paketpris som spelare.",
+    "leaderCostEurApprox": 268,
+    "teamFeeText": "Lagavgift/registreringsavgift enligt Cup No.1:s officiella prislista.",
+    "teamFeeEurApprox": null,
+    "level": "mix",
+    "levelDisplay": "Stor internationell cup i norra Danmark, 11 mot 11 för U15 med lag från många länder.",
+    "accommodation": "Skolor, idrottshallar, ibland andra boendealternativ, eller eget boende via researrangör.",
+    "notes": "U15 (2011) spelar 11 mot 11. Bra nordisk/internationell känsla."
   }
 ]
