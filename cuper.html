@@ -98,12 +98,20 @@
     a {
       color: #0b66c3;
     }
+    .cup-count {
+      font-weight: 600;
+      margin: 0.5rem 0 1rem;
+    }
   </style>
 </head>
 <body>
   <h1>Fotbollscuper i Europa 2026 – P2011/U15</h1>
   <small>Version 2.0 – data från JSON, med filter &amp; sortering</small>
 
+  <div id="cup-count" class="cup-count">
+    Antal cuper: 0
+  </div>
+  
   <div class="filters">
     <label>
       Månad (startdatum)
@@ -160,6 +168,8 @@
     </label>
   </div>
 
+
+
   <table id="cupTable">
     <thead>
       <tr>
@@ -197,10 +207,19 @@
     const headerCells = document.querySelectorAll("#cupTable thead th.sortable");
 
     let cups = [];
+    let allCups = [];
+    
     let currentSort = {
       key: "startDate",
       direction: "asc", // eller "desc"
     };
+
+    function updateCupCount(count) {
+      const el = document.getElementById("cup-count");
+      if (el) {
+        el.textContent = `Antal cuper: ${count}`;
+      }
+    }
 
     function normalize(str) {
       return (str || "").toLowerCase().trim();
