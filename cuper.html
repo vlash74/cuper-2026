@@ -108,7 +108,7 @@
   <h1>Fotbollscuper i Europa 2026 – P2011/U15</h1>
   <small>Version 2.0 – data från JSON, med filter &amp; sortering</small>
 
-  <div id="cup-count" class="cup-count">
+  <div id="cupCounter" style="margin: 4px 0 16px; font-weight: 500;">
     Antal cuper: 0
   </div>
   
@@ -207,7 +207,9 @@
     const headerCells = document.querySelectorAll("#cupTable thead th.sortable");
 
     let cups = [];
-    let allCups = [];
+    let allCups = [];     // alla cuper från JSON
+    let currentCups = []; // senast renderade (efter filter)
+
     
     let currentSort = {
       key: "startDate",
@@ -257,6 +259,9 @@
 
         return true;
       });
+
+      currentCups = filtered;
+      renderCups(currentCups); // updateCupCounter körs i renderCups
     }
 
     function compareValues(a, b, key) {
@@ -340,6 +345,9 @@
 
         tableBody.appendChild(tr);
       });
+
+        // uppdatera räknaren efter att tabellen byggts
+        updateCupCounter(cups.length);
     }
 
     function setHeaderSortStyles() {
@@ -379,10 +387,22 @@
       });
     }
 
+    function updateCupCounter(count) {
+      const el = document.getElementById("cupCounter");
+      if (!el) return;
+      el.textContent = `Antal cuper: ${count}`;
+    }
+
+
     async function loadData() {
       try {
         const response = await fetch("cuper_2026_data.json");
-        cups = await response.json();
+        //cups = await response.json();
+        const data = await response.json();
+        allCups = data;
+        currentCups = data;
+        renderCups(currentCups);
+        updateCupCounter(currentCups.length);
         renderTable();
       } catch (err) {
         console.error("Kunde inte ladda JSON-data:", err);
