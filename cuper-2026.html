@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8" />
+  <title>Fotbollscuper 2026 – P2011/U15</title>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      margin: 20px;
+      background: #f5f5f5;
+    }
+    h1 {
+      margin-bottom: 0;
+    }
+    small {
+      color: #555;
+    }
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      padding: 12px;
+      background: #ffffff;
+      border-radius: 8px;
+      margin: 16px 0;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .filters label {
+      font-size: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .filters select,
+    .filters input {
+      padding: 4px 6px;
+      font-size: 14px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #ffffff;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+    }
+    th, td {
+      padding: 8px 10px;
+      border-bottom: 1px solid #eee;
+      font-size: 13px;
+      vertical-align: top;
+    }
+    th {
+      background: #fafafa;
+      position: sticky;
+      top: 0;
+      z-index: 1;
+    }
+    tr:nth-child(even) td {
+      background: #fcfcfc;
+    }
+    .level-tag {
+      display: inline-block;
+      padding: 2px 6px;
+      border-radius: 999px;
+      font-size: 11px;
+      background: #eef;
+    }
+    .level-elite { background: #ffe5e5; }
+    .level-bredd { background: #e5ffe8; }
+    .level-mix   { background: #fff7e0; }
+    .note {
+      font-size: 12px;
+      color: #666;
+      margin-top: 8px;
+      max-width: 900px;
+    }
+    .hidden {
+      display: none;
+    }
+    a {
+      color: #0b66c3;
+    }
+  </style>
+</head>
+<body>
+  <h1>Fotbollscuper i Europa 2026 – P2011/U15</h1>
+  <small>Version 1.0 – urval av internationella cuper (ej komplett lista)</small>
+
+  <div class="filters">
+    <label>
+      Månad (startdatum)
+      <select id="filterMonth">
+        <option value="">Alla</option>
+        <option value="2">Februari</option>
+        <option value="3">Mars</option>
+        <option value="4">April</option>
+        <option value="5">Maj</option>
+        <option value="6">Juni</option>
+        <option value="7">Juli</option>
+        <option value="8">Augusti</option>
+        <option value="9">September</option>
+        <option value="10">Oktober</option>
+      </select>
+    </label>
+
+    <label>
+      Land
+      <select id="filterCountry">
+        <option value="">Alla</option>
+        <option value="Sverige">Sverige</option>
+        <option value="Norge">Norge</option>
+        <option value="Finland">Finland</option>
+        <option value="Danmark">Danmark</option>
+        <option value="Spanien">Spanien</option>
+        <option value="Frankrike">Frankrike</option>
+        <option value="Nederländerna">Nederländerna</option>
+        <option value="Lettland">Lettland</option>
+        <option value="Belgien">Belgien</option>
+        <option value="Italien">Italien</option>
+        <option value="Portugal">Portugal</option>
+      </select>
+    </label>
+
+    <label>
+      Nivå
+      <select id="filterLevel">
+        <option value="">Alla</option>
+        <option value="bredd">Bredd</option>
+        <option value="mix">Mix bredd/elit</option>
+        <option value="elite">Elite/akademi</option>
+      </select>
+    </label>
+
+    <label>
+      Max kostnad per spelare (ca, numeriskt)
+      <input type="number" id="filterMaxCost" min="0" step="10" placeholder="t.ex. 400" />
+    </label>
+
+    <label>
+      Fritext (cupnamn/stad)
+      <input type="text" id="filterSearch" placeholder="t.ex. Gothia, Barcelona..." />
+    </label>
+  </div>
+
+  <table id="cupTable">
+    <thead>
+      <tr>
+        <th>Cup</th>
+        <th>Datum 2026</th>
+        <th>Sista anmälan*</th>
+        <th>Kostnad / spelare (ca)</th>
+        <th>Kostnad / ledare (ca)</th>
+        <th>Lagavgift / registrering</th>
+        <th>Nivå (tolkning)</th>
+        <th>Boendeform</th>
+        <th>Land</th>
+        <th>Stad/område</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- 1. Gothia Cup -->
+      <tr
+        data-month="7"
+        data-country="Sverige"
+        data-level="mix"
+        data-cost="350"
+      >
+        <td>
+          <strong>Gothia Cup</strong><br />
+          <a href="https://gothiacup.se/" target="_blank">Officiell sida</a>
+        </td>
+        <td>12–18 juli</td>
+        <td>10 mars (anmälan stänger)</td>
+        <td>
+          Ca €350 / person (skolboende)<br />
+          (€80 deltagaravgift + €270 boende)
+        </td>
+        <td>
+          Ca €350 / person (samma som spelare, ledare räknas som deltagare)
+        </td>
+        <td>
+          Registreringsavgift: €240/lag (kat. A/B)<br />
+          €760/lag (kat. C, eget boende)
+        </td>
+        <td>
+          <span class="level-tag level-mix">Mix bredd/elit, stor internationell</span>
+        </td>
+        <td>Skola, hotell eller eget boende via arrangör</td>
+        <td>Sverige</td>
+        <td>Göteborg</td>
+      </tr>
+
+      <!-- 2. Norway Cup -->
+      <tr
+        data-month="7"
+        data-country="Norge"
+        data-level="mix"
+        data-cost=""
+      >
+        <td>
+          <strong>Norway Cup</strong><br />
+          <a href="https://norwaycup.no/" target="_blank">Officiell sida</a>
+        </td>
+        <td>25 juli – 1 augusti</td>
+        <td>TBA (se sidan “Deltakerkort og priser”)</td>
+        <td>TBA – deltagarkort/boendepaket publiceras normalt vintern/våren</td>
+        <td>TBA</td>
+        <td>TBA</td>
+        <td>
+          <span class="level-tag level-mix">Mix bredd/elit, mycket stor internationell</span>
+        </td>
+        <td>Boendepaket via arrangör (vanligen skola/hotell)</td>
+        <td>Norge</td>
+        <td>Oslo</td>
+      </tr>
+
+      <!-- 3. Helsinki Cup -->
+      <tr
+        data-month="7"
+        data-country="Finland"
+        data-level="mix"
+        data-cost=""
+      >
+        <td>
+          <strong>Helsinki Cup</strong><br />
+          <a href="https://helsinkicup.fi/en/frontpage/" target="_blank">Officiell sida</a>
+        </td>
+        <td>6–11 juli</td>
+        <td>TBA</td>
+        <td>TBA – turneringspaket/boende publiceras separat</td>
+        <td>TBA</td>
+        <td>TBA</td>
+        <td>
+          <span class="level-tag level-mix">Stor internationell bredd/elit</span>
+        </td>
+        <td>Turneringspaket med olika boenden (hotell, skola m.m.)</td>
+        <td>Finland</td>
+        <td>Helsingfors (Helsinki–Esbo–Vanda)</td>
+      </tr>
+
+      <!-- 4. Dana Cup -->
+      <tr
+        data-month="7"
+        data-country="Danmark"
+        data-level="mix"
+        data-cost=""
+      >
+        <td>
+          <strong>Dana Cup</strong><br />
+          <a href="https://www.danacup.dk/" target="_blank">Officiell sida</a>
+        </td>
+        <td>20–25 juli</td>
+        <td>TBA</td>
+        <td>TBA – deltagarpaket via arrangör/resepartners</td>
+        <td>TBA</td>
+        <td>TBA</td>
+        <td>
+          <span class="level-tag level-mix">Stor internationell cup</span>
+        </td>
+        <td>Boendepaket (ofta skola, vandrarhem, hotell)</td>
+        <td>Danmark</td>
+        <td>Hjørring</td>
+      </tr>
+
+      <!-- 5. Donosti Cup -->
+      <tr
+        data-month="7"
+        data-country="Spanien"
+        data-level="mix"
+        data-cost=""
+      >
+        <td>
+          <strong>Donosti Cup</strong><br />
+          <a href="https://www.donosticup.com/en" target="_blank">Officiell sida</a>
+        </td>
+        <td>6–12 juli</td>
+        <td>
+          Anmälan öppnar 16 september 2025 kl. 10.00 – sista datum ej publicerat
+        </td>
+        <td>TBA – paket med boende erbjuds via arrangör/resebyråer</td>
+        <td>TBA</td>
+        <td>TBA</td>
+        <td>
+          <span class="level-tag level-mix">Stor internationell cup (mix bredd/elit)</span>
+        </td>
+        <td>Boendepaket (hotell/skola m.m.)</td>
+        <td>Spanien</td>
+        <td>San Sebastián (Donostia)</td>
+      </tr>
+
+      <!-- 6. MICFootball (Mediterranean International Cup) -->
+      <tr
+        data-month="3"
+        data-country="Spanien"
+        data-level="elite"
+        data-cost=""
+      >
+        <td>
+          <strong>MICFootball – Mediterranean International Cup</strong><br />
+          <a href="https://micfootball.com/en/home-english/" target="_blank">Officiell sida</a>
+        </td>
+        <td>31 mars – 5 april</td>
+        <td>TBA</td>
+        <td>TBA – ofta elitinriktade paket (boende + turnering)</td>
+        <td>TBA</td>
+        <td>TBA</td>
+        <td>
+          <span class="level-tag level-elite">Elite/akademi</span>
+        </td>
+        <td>Boendepaket via arrangör/resebyrå (hotell m.m.)</td>
+        <td>Spanien</td>
+        <td>Costa Brava (Katalonien)</td>
+      </tr>
+
+      <!-- 7. Copa Costa Brava -->
+      <tr
+        data-month="3"
+        data-country="Spanien"
+        data-level="bredd"
+        data-cost=""
+      >
+        <td>
+          <strong>Copa Costa Brava</strong><br />
+          <a href="https://www.euro-sportring.com/en/copa-costa-brava" target="_blank">Euro-Sportring info</a>
+        </td>
+        <td>29 mars – 1 april (påsk)</td>
+        <td>TBA – via Euro-Sportring/arrangör</td>
+        <td>TBA – paketpris per person (boende + cup)</td>
+        <td>TBA</td>
+        <td>Normalt lagavgift ingår i paket, se arrangör</td>
+        <td>
+          <span class="level-tag level-bredd">Internationell breddcup</span>
+        </td>
+        <td>Hotell/semesteranläggning via Euro-Sportring m.fl.</td>
+        <td>Spanien</td>
+        <td>Blanes–Tordera (nära Barcelona)</td>
+      </tr>
+
+      <!-- 8. Copa Jordi -->
+      <tr
+        data-month="4"
+        data-country="Spanien"
+        data-level="bredd"
+        data-cost=""
+      >
+        <td>
+          <strong>Copa Jordi</strong><br />
+          <a href="https://www.euro-sportring.com/en/international-football-tournaments/youth-football-tournaments/spain" target="_blank">Euro-Sportring info</a>
+        </td>
+        <td>3–5 april (påskhelg)</td>
+        <td>TBA</td>
+        <td>TBA – paketpris per person</td>
+        <td>TBA</td>
+        <td>Normalt lagavgift ingår, se arrangör</td>
+        <td>
+          <span class="level-tag level-bredd">Internationell breddcup</span>
+        </td>
+        <td>Hotell/semesteranläggning via Euro-Sportring m.fl.</td>
+        <td>Spanien</td>
+        <td>Blanes–Tordera (nära Barcelona)</td>
+      </tr>
+
+      <!-- 9. Paris World Games -->
+      <tr
+        data-month="7"
+        data-country="Frankrike"
+        data-level="mix"
+        data-cost=""
+      >
+        <td>
+          <strong>Paris World Games</strong><br />
+          <a href="https://www.parisworldgames.com/en/" target="_blank">Officiell sida</a>
+        </td>
+        <td>6–11 juli</td>
+        <td>TBA – anmälan öppen</td>
+        <td>TBA – flera paketnivåer (boende + deltagarkort)</td>
+        <td>TBA</td>
+        <td>TBA</td>
+        <td>
+          <span class="level-tag level-mix">Stor internationell, flera nivåer</span>
+        </td>
+        <td>Hotell/studentboende via arrangör</td>
+        <td>Frankrike</td>
+        <td>Paris</td>
+      </tr>
+
+      <!-- 10. Dutch Soccer Youth Cup -->
+      <tr
+        data-month="5"
+        data-country="Nederländerna"
+        data-level="bredd"
+        data-cost="247"
+      >
+        <td>
+          <strong>Dutch Soccer Youth Cup</strong><br />
+          <a href="https://www.eurotournaments.com/en/turniere/dutch-soccer-youth-cup/" target="_blank">Info (Eurotournaments)</a>
+        </td>
+        <td>22–24 maj</td>
+        <td>TBA – anmälan via turnerings- eller researrangör</td>
+        <td>
+          Från ca €247 per person (paket via Eurotournaments: boende + cup,
+          exkl. flyg från Norden)
+        </td>
+        <td>Ofta samma prisnivå som spelare i paket</td>
+        <td>
+          I vissa paket ingår 1 lagavgift, extra lag ca £290 (exempel via UK-arrangör)
+        </td>
+        <td>
+          <span class="level-tag level-bredd">Stor internationell breddcup</span>
+        </td>
+        <td>Hotell/stugby m.m. via researrangör</td>
+        <td>Nederländerna</td>
+        <td>Rotterdam &amp; Capelle aan den IJssel</td>
+      </tr>
+
+      <!-- 11. Riga Cup Spring (U12–U15) -->
+      <tr
+        data-month="5"
+        data-country="Lettland"
+        data-level="elite"
+        data-cost=""
+      >
+        <td>
+          <strong>Riga Cup Spring</strong><br />
+          <a href="https://www.rigacup.lv/" target="_blank">Officiell sida</a>
+        </td>
+        <td>14–17 maj (vårupplaga, U12–U15)</td>
+        <td>TBA – kontakt via arrangör</td>
+        <td>TBA – paket med boende + helpension</td>
+        <td>TBA</td>
+        <td>TBA</td>
+        <td>
+          <span class="level-tag level-elite">Hög nivå / många akademier</span>
+        </td>
+        <td>Boendepaket med helpension via arrangör</td>
+        <td>Lettland</td>
+        <td>Riga</td>
+      </tr>
+
+      <!-- 12. Hageland Cup (Belgien) -->
+      <tr
+        data-month="5"
+        data-country="Belgien"
+        data-level="bredd"
+        data-cost="399"
+      >
+        <td>
+          <strong>Hageland Cup</strong><br />
+          <a href="https://hagelandcup.be/en/hageland-cup-en/" target="_blank">Officiell info</a>
+        </td>
+        <td>22–25 maj (2-dagars turnering under helgen)</td>
+        <td>TBA</td>
+        <td>
+          Exempelpaket: från ca £399 per person (Sports Tours, inkl. boende +
+          resa från UK)
+        </td>
+        <td>Ofta samma paketpris som spelare</td>
+        <td>
+          I vissa paket ingår 1 lagavgift (extra lag ca £290 enligt UK-paket)
+        </td>
+        <td>
+          <span class="level-tag level-bredd">Internationell breddcup</span>
+        </td>
+        <td>Boende i semesteranläggning/hotell via arrangör</td>
+        <td>Belgien</td>
+        <td>Region Tongerlo/Kasterlee (mellan Antwerpen &amp; Bryssel)</td>
+      </tr>
+
+      <!-- 13. Italy Cup (Euro-Sportring) -->
+      <tr
+        data-month="10"
+        data-country="Italien"
+        data-level="bredd"
+        data-cost=""
+      >
+        <td>
+          <strong>Italy Cup</strong><br />
+          <a href="https://www.euro-sportring.com/en/international-football-tournaments/youth-football-tournaments?page=8" target="_blank">
+            Euro-Sportring info
+          </a>
+        </td>
+        <td>12–14 oktober (höst)</td>
+        <td>TBA</td>
+        <td>TBA – paket per person (boende + turnering)</td>
+        <td>TBA</td>
+        <td>Lagavgift brukar ingå i paket</td>
+        <td>
+          <span class="level-tag level-bredd">Internationell breddcup</span>
+        </td>
+        <td>Hotell via Euro-Sportring</td>
+        <td>Italien</td>
+        <td>Italien (ort enligt turneringsinfo för 2026)</td>
+      </tr>
+
+      <!-- 14. Verona Cup -->
+      <tr
+        data-month="10"
+        data-country="Italien"
+        data-level="mix"
+        data-cost=""
+      >
+        <td>
+          <strong>Verona Cup</strong><br />
+          <a href="https://www.veronacup.com/en/" target="_blank">Officiell sida</a>
+        </td>
+        <td>Oktober (exakta datum 2026 aviseras av arrangör)</td>
+        <td>TBA</td>
+        <td>TBA – paket (boende vid Gardasjön + turnering)</td>
+        <td>TBA</td>
+        <td>TBA</td>
+        <td>
+          <span class="level-tag level-mix">Stor social turnering, mix nivå</span>
+        </td>
+        <td>Hotell/semesteranläggningar runt Gardasjön</td>
+        <td>Italien</td>
+        <td>Gardasjön (Verona-området)</td>
+      </tr>
+
+      <!-- 15. Football Cup Barcelona (oktoberupplaga) -->
+      <tr
+        data-month="10"
+        data-country="Spanien"
+        data-level="bredd"
+        data-cost=""
+      >
+        <td>
+          <strong>Football Cup Barcelona</strong><br />
+          <a href="https://www.footballcupbarcelona.com/en/" target="_blank">Officiell sida</a>
+        </td>
+        <td>17–18 &amp; 24–25 oktober (helgturneringar)</td>
+        <td>TBA</td>
+        <td>TBA – paket per person (boende + cup)</td>
+        <td>TBA</td>
+        <td>TBA</td>
+        <td>
+          <span class="level-tag level-bredd">Internationell breddcup</span>
+        </td>
+        <td>Resort/hotell i Salou/Cambrils-området</td>
+        <td>Spanien</td>
+        <td>Salou &amp; Cambrils (söder om Barcelona)</td>
+      </tr>
+
+      <!-- 16. Lisbon Football Youth Cup -->
+      <tr
+        data-month="10"
+        data-country="Portugal"
+        data-level="bredd"
+        data-cost=""
+      >
+        <td>
+          <strong>Lisbon Football Youth Cup</strong><br />
+          <a href="https://www.lisbonfootballcup.com/en/" target="_blank">Officiell sida</a>
+        </td>
+        <td>24–25 oktober</td>
+        <td>TBA</td>
+        <td>TBA – turneringspaket (boende + cup)</td>
+        <td>TBA</td>
+        <td>TBA</td>
+        <td>
+          <span class="level-tag level-bredd">Internationell breddcup</span>
+        </td>
+        <td>Hotell/boendepaket via arrangör</td>
+        <td>Portugal</td>
+        <td>Lissabon</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p class="note">
+    * Sista anmälningsdatum och kostnader ändras ofta år till år och var inte
+    alltid publicerade för 2026 när denna fil skapades. Använd tabellen som
+    utgångspunkt och dubbelkolla alltid på cupens officiella webbsida eller hos
+    din researrangör innan ni bestämmer er eller gör budget.
+  </p>
+
+  <script>
+    (function () {
+      const monthSelect = document.getElementById("filterMonth");
+      const countrySelect = document.getElementById("filterCountry");
+      const levelSelect = document.getElementById("filterLevel");
+      const maxCostInput = document.getElementById("filterMaxCost");
+      const searchInput = document.getElementById("filterSearch");
+      const rows = Array.from(document.querySelectorAll("#cupTable tbody tr"));
+
+      function normalize(str) {
+        return (str || "").toLowerCase().trim();
+      }
+
+      function applyFilters() {
+        const month = monthSelect.value;
+        const country = countrySelect.value;
+        const level = levelSelect.value;
+        const maxCost = maxCostInput.value ? parseFloat(maxCostInput.value) : null;
+        const search = normalize(searchInput.value);
+
+        rows.forEach(row => {
+          const rowMonth = row.getAttribute("data-month");
+          const rowCountry = row.getAttribute("data-country");
+          const rowLevel = row.getAttribute("data-level");
+          const rowCost = row.getAttribute("data-cost");
+          const text = normalize(row.innerText || row.textContent);
+
+          let visible = true;
+
+          if (month && rowMonth !== month) visible = false;
+          if (visible && country && rowCountry !== country) visible = false;
+          if (visible && level && rowLevel !== level) visible = false;
+
+          if (visible && maxCost !== null) {
+            const costNum = rowCost ? parseFloat(rowCost) : NaN;
+            // Om vi filtrerar på kostnad och raden saknar uppskattad kostnad -> göm den
+            if (isNaN(costNum) || costNum > maxCost) {
+              visible = false;
+            }
+          }
+
+          if (visible && search) {
+            if (!text.includes(search)) visible = false;
+          }
+
+          row.classList.toggle("hidden", !visible);
+        });
+      }
+
+      [monthSelect, countrySelect, levelSelect, maxCostInput, searchInput].forEach(el => {
+        el.addEventListener("input", applyFilters);
+        el.addEventListener("change", applyFilters);
+      });
+
+      // Initialt: visa allt
+      applyFilters();
+    })();
+  </script>
+</body>
+</html>
