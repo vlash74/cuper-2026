@@ -389,5 +389,28 @@
     "levelDisplay": "En av Finlands största juniorcuper, mix bredd/elit med internationella inslag",
     "accommodation": "Boendepaket i Kokkola (skolor, lokala boenden, hotell) samt eget boende-alternativ",
     "notes": "Exakta spel­datum för 2026 är inte listade vid sökningstillfället, men cupen spelas traditionellt fyra dagar i mitten av juli. Kolla officiell sida för uppdaterat datum."
+  },
+  {
+    "id": "pitea-summer-games",
+    "name": "Piteå Summer Games",
+    "url": "https://www.piteasummergames.se/",
+    "country": "Sverige",
+    "city": "Piteå",
+    "month": 6,
+    "dateText": "26–28 juni",
+    "startDate": "2026-06-26",
+    "endDate": "2026-06-28",
+    "registrationDeadlineText": "Anmälan öppnar 5 september 2025 kl. 10.00, klasser stängs när de är fulla",
+    "registrationDeadline": null,
+    "playerCostText": "Deltagaravgift + boendepaket, nivåer för 2026 publiceras av arrangören – se avgiftssidan",
+    "playerCostEurApprox": null,
+    "leaderCostText": "Ledare räknas normalt som deltagare med samma deltagaravgift",
+    "leaderCostEurApprox": null,
+    "teamFeeText": "Anmälnings-/lagavgift anges i turneringens avgiftsinformation",
+    "teamFeeEurApprox": null,
+    "level": "mix",
+    "levelDisplay": "Stor internationell turnering, mix bredd/elit",
+    "accommodation": "Skolboende och andra lokala boenden (samlingslokaler, förskolor, sporthallar), samt hotell/camping via separata bokningar",
+    "notes": "Datum bekräftade: 26–28 juni 2026. Anmälan öppnar 5 september 2025."
   }
 ]
