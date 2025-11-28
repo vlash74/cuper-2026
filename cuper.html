@@ -2,12 +2,13 @@
 <html lang="sv">
 <head>
   <meta charset="UTF-8" />
-  <title>Fotbollscuper 2026 – P2011/U15</title>
+  <title>Fotbollscuper 2026 – P11:2</title>
   <style>
     body {
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       margin: 20px;
       background: #f5f5f5;
+      min-height: 100vh;
     }
     h1 {
       margin-bottom: 0;
@@ -22,8 +23,11 @@
       padding: 12px;
       background: #ffffff;
       border-radius: 8px;
-      margin: 16px 0;
+      margin-bottom: 0;
       box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
     }
     .filters label {
       font-size: 14px;
@@ -36,12 +40,112 @@
       padding: 4px 6px;
       font-size: 14px;
     }
+    .table-scroll {
+      position: relative;
+      margin-top: 0;
+    }
     table {
       width: 100%;
       border-collapse: collapse;
       background: #ffffff;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+    }
+    th, td {
+      padding: 12px 10px;
+      border-bottom: 1px solid #eee;
+      font-size: 13px;
+      vertical-align: top;
+    }
+    th {
+      background: #fafafa;
+      position: sticky;
+      top: 0px;
+      z-index: 10;
+    }
+    th.sortable {
+      cursor: pointer;
+      user-select: none;
+    }
+    th.sortable::after {
+      content: " ⇅";
+      font-size: 11px;
+      color: #888;
+    }
+    th.sorted-asc::after {
+      content: " ↑";
+      font-size: 11px;
+      color: #000;
+    }
+    th.sorted-desc::after {
+      content: " ↓";
+      font-size: 11px;
+      color: #000;
+    }
+    tr:nth-child(even) td {
+      background: #fcfcfc;
+    }
+    .level-tag {
+      display: inline-block;
+      padding: 2px 6px;
+      border-radius: 999px;
+      font-size: 11px;
+      background: #eef;
+    }
+    .level-elite { background: #ffe5e5; }
+    .level-bredd { background: #e5ffe8; }
+    .level-mix   { background: #fff7e0; }
+    .note {
+      font-size: 12px;
+      color: #666;
+      margin-top: 8px;
+      max-width: 900px;
+    }
+    .hidden {
+      display: none;
+    }
+    a {
+      color: #0b66c3;
+    }
+    .cup-count {
+      font-weight: 600;
+      margin: 0.5rem 0 1rem;
+    }
+    small {
+      color: #555;
+    }
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      padding: 12px;
+      background: #ffffff;
       border-radius: 8px;
-      overflow: hidden;
+      margin: 16px 0;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .filters label {
+      font-size: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .filters select,
+    .filters input {
+      padding: 4px 6px;
+      font-size: 14px;
+    }
+    .table-scroll {
+      max-height: 90vh;
+      overflow-y: auto;
+      position: relative;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #ffffff;
       box-shadow: 0 1px 4px rgba(0,0,0,0.1);
     }
     th, td {
@@ -53,8 +157,10 @@
     th {
       background: #fafafa;
       position: sticky;
-      top: 0;
-      z-index: 1;
+      top: 0px;
+      z-index: 102;
+    }
+    th.sortable {
       cursor: pointer;
       user-select: none;
     }
@@ -105,23 +211,12 @@
   </style>
 </head>
 <body>
-  <h1>Fotbollscuper i Europa 2026 – P2011/U15</h1>
-  <small>Version 2.0 – data från JSON, med filter &amp; sortering</small>
-
-  <div id="cupCounter" style="margin: 4px 0 16px; font-weight: 500;">
-    Antal cuper: 0
-  </div>
-  <div style="margin-bottom: 1rem; display: flex; gap: 2rem; align-items: center;">
-    <label>Antal spelare: <input type="number" id="numPlayers" min="0" value="10" style="width: 60px;" /></label>
-    <label>Antal ledare: <input type="number" id="numCoaches" min="0" value="2" style="width: 60px;" /></label>
-    <span id="totalCostDisplay" style="font-weight: 600; color: #0b66c3;"></span>
-  </div>
-  
+  <h1>Fotbollscuper 2026 – P11:2</h1>
   <div class="filters">
-    <label>
-      Månad (startdatum)
-      <select id="filterMonth">
+    <label>Månad
+      <select id="monthSelect">
         <option value="">Alla</option>
+        <option value="1">Januari</option>
         <option value="2">Februari</option>
         <option value="3">Mars</option>
         <option value="4">April</option>
@@ -131,12 +226,12 @@
         <option value="8">Augusti</option>
         <option value="9">September</option>
         <option value="10">Oktober</option>
+        <option value="11">November</option>
+        <option value="12">December</option>
       </select>
     </label>
-
-    <label>
-      Land
-      <select id="filterCountry">
+    <label>Land
+      <select id="countrySelect">
         <option value="">Alla</option>
         <option value="Sverige">Sverige</option>
         <option value="Norge">Norge</option>
@@ -151,60 +246,62 @@
         <option value="Portugal">Portugal</option>
       </select>
     </label>
-
-    <label>
-      Nivå
-      <select id="filterLevel">
+    <label>Nivå
+      <select id="levelSelect">
         <option value="">Alla</option>
+        <option value="elite">Elite</option>
         <option value="bredd">Bredd</option>
-        <option value="mix">Mix bredd/elit</option>
-        <option value="elite">Elite/akademi</option>
+        <option value="mix">Mix</option>
       </select>
     </label>
-
-    <label>
-      Max kostnad per spelare (ca, numeriskt)
-      <input type="number" id="filterMaxCost" min="0" step="10" placeholder="t.ex. 400" />
+    <label>Max spelarkostnad (€)
+      <input type="number" id="maxCostInput" min="0" />
     </label>
-
-    <label>
-      Fritext (cupnamn/stad)
-      <input type="text" id="filterSearch" placeholder="t.ex. Gothia, Barcelona..." />
+    <label>Sök
+      <input type="text" id="searchInput" placeholder="Cup, stad, land..." />
+    </label>
+    <label>Antal spelare
+      <input type="number" id="numPlayers" min="0" value="15" />
+    </label>
+    <label>Antal ledare
+      <input type="number" id="numCoaches" min="0" value="3" />
     </label>
   </div>
-
-
-
-  <table id="cupTable">
-    <thead>
-      <tr>
-        <th></th>
-        <th class="sortable" data-sort-key="name">Cup</th>
-        <th class="sortable" data-sort-key="startDate">Datum 2026</th>
-        <th class="sortable" data-sort-key="country">Land</th>
-        <th class="sortable" data-sort-key="city">Stad/område</th>
-        <th class="sortable" data-sort-key="level">Nivå (tolkning)</th>
-        <th class="sortable" data-sort-key="registrationDeadline">Sista anmälan*</th>
-        <th class="sortable" data-sort-key="playerCostEurApprox">Kostnad / spelare (ca)</th>
-        <th class="sortable" data-sort-key="leaderCostEurApprox">Kostnad / ledare (ca)</th>
-        <th class="sortable" data-sort-key="teamFeeEurApprox">Lagavgift / registrering</th>
-        <th>Boendeform</th>
-      </tr>
-    </thead>
-    <tbody>
-      <!-- Fylls via JavaScript -->
-    </tbody>
-  </table>
-
+  <div class="cup-count" id="cupCounter"></div>
+  <div id="totalCostDisplay"></div>
+  <div class="table-scroll">
+    <table>
+      <thead>
+        <tr>
+          <th></th>
+          <th data-sort-key="name" class="sortable">Cup</th>
+          <th data-sort-key="startDate" class="sortable">Datum</th>
+          <th data-sort-key="country" class="sortable">Land</th>
+          <th data-sort-key="city" class="sortable">Stad</th>
+          <th data-sort-key="level" class="sortable">Nivå</th>
+          <th data-sort-key="registrationDeadline" class="sortable">Sista anmälan</th>
+          <th data-sort-key="playerCostEurApprox" class="sortable">Spelare (€)</th>
+          <th data-sort-key="leaderCostEurApprox" class="sortable">Ledare (€)</th>
+          <th data-sort-key="teamFeeEurApprox" class="sortable">Lagavgift (€)</th>
+          <th data-sort-key="accommodation" class="sortable">Boende</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody"></tbody>
+    </table>
+  </div>
   <p class="note">
     * Sista anmälningsdatum och kostnader ändras ofta år till år och var inte
     alltid publicerade för 2026 när denna fil skapades. Använd tabellen som
     utgångspunkt och dubbelkolla alltid på cupens officiella webbsida eller hos
     din researrangör innan ni bestämmer er eller gör budget.
   </p>
-
   <script>
-        function calculateTotalCost(selectedCups) {
+        function updateTotalCostDisplay() {
+          const checkboxes = document.querySelectorAll('.cup-select');
+          const selectedIndexes = Array.from(checkboxes)
+            .filter(cb => cb.checked)
+            .map(cb => parseInt(cb.getAttribute('data-index'), 10));
+          const selectedCups = selectedIndexes.map(idx => currentCups[idx]).filter(Boolean);
           const numPlayers = parseInt(document.getElementById('numPlayers').value, 10) || 0;
           const numCoaches = parseInt(document.getElementById('numCoaches').value, 10) || 0;
           let total = 0;
@@ -214,33 +311,20 @@
             const teamFee = typeof cup.teamFeeEurApprox === 'number' ? cup.teamFeeEurApprox : 0;
             total += teamFee + (numPlayers * playerCost) + (numCoaches * coachCost);
           });
-          return total;
-        }
-
-        function updateTotalCostDisplay() {
-          const checkboxes = document.querySelectorAll('.cup-select');
-          const selectedIndexes = Array.from(checkboxes)
-            .filter(cb => cb.checked)
-            .map(cb => parseInt(cb.getAttribute('data-index'), 10));
-          const filtered = applyFilters(cups);
-          const selectedCups = selectedIndexes.map(idx => filtered[idx]).filter(Boolean);
-          const total = calculateTotalCost(selectedCups);
           const display = document.getElementById('totalCostDisplay');
-          display.textContent = selectedCups.length > 0 ? `Total kostnad: ${total.toLocaleString()} EUR` : '';
+          display.textContent = `Total kostnad: €${total}`;
         }
-    const monthSelect = document.getElementById("filterMonth");
-    const countrySelect = document.getElementById("filterCountry");
-    const levelSelect = document.getElementById("filterLevel");
-    const maxCostInput = document.getElementById("filterMaxCost");
-    const searchInput = document.getElementById("filterSearch");
-    const tableBody = document.querySelector("#cupTable tbody");
-    const headerCells = document.querySelectorAll("#cupTable thead th.sortable");
-
+    // Globala variabler och DOM-element
     let cups = [];
-    let allCups = [];     // alla cuper från JSON
-    let currentCups = []; // senast renderade (efter filter)
+    let currentCups = [];
+    const monthSelect = document.getElementById('monthSelect');
+    const countrySelect = document.getElementById('countrySelect');
+    const levelSelect = document.getElementById('levelSelect');
+    const maxCostInput = document.getElementById('maxCostInput');
+    const searchInput = document.getElementById('searchInput');
+    const headerCells = Array.from(document.querySelectorAll('th.sortable'));
+    const tableBody = document.getElementById('tableBody');
 
-    
     let currentSort = {
       key: "startDate",
       direction: "asc", // eller "desc"
@@ -341,6 +425,7 @@
     function renderTable() {
       const filtered = applyFilters(cups);
       const sorted = sortCups(filtered);
+      currentCups = sorted;
 
       tableBody.innerHTML = "";
 
@@ -432,11 +517,6 @@
       document.getElementById('numPlayers').addEventListener('input', updateTotalCostDisplay);
       document.getElementById('numCoaches').addEventListener('input', updateTotalCostDisplay);
     }
-
-    function updateCupCounter(count) {
-      // Remove this function, use updateCupCount only
-    }
-
 
     async function loadData() {
       try {
