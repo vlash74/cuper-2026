@@ -108,8 +108,13 @@
   <h1>Fotbollscuper i Europa 2026 – P2011/U15</h1>
   <small>Version 2.0 – data från JSON, med filter &amp; sortering</small>
 
-  <div id="cup-count" class="cup-count">
+  <div id="cupCounter" style="margin: 4px 0 16px; font-weight: 500;">
     Antal cuper: 0
+  </div>
+  <div style="margin-bottom: 1rem; display: flex; gap: 2rem; align-items: center;">
+    <label>Antal spelare: <input type="number" id="numPlayers" min="0" value="10" style="width: 60px;" /></label>
+    <label>Antal ledare: <input type="number" id="numCoaches" min="0" value="2" style="width: 60px;" /></label>
+    <span id="totalCostDisplay" style="font-weight: 600; color: #0b66c3;"></span>
   </div>
   
   <div class="filters">
@@ -173,16 +178,17 @@
   <table id="cupTable">
     <thead>
       <tr>
+        <th></th>
         <th class="sortable" data-sort-key="name">Cup</th>
         <th class="sortable" data-sort-key="startDate">Datum 2026</th>
+        <th class="sortable" data-sort-key="country">Land</th>
+        <th class="sortable" data-sort-key="city">Stad/område</th>
+        <th class="sortable" data-sort-key="level">Nivå (tolkning)</th>
         <th class="sortable" data-sort-key="registrationDeadline">Sista anmälan*</th>
         <th class="sortable" data-sort-key="playerCostEurApprox">Kostnad / spelare (ca)</th>
         <th class="sortable" data-sort-key="leaderCostEurApprox">Kostnad / ledare (ca)</th>
         <th class="sortable" data-sort-key="teamFeeEurApprox">Lagavgift / registrering</th>
-        <th class="sortable" data-sort-key="level">Nivå (tolkning)</th>
         <th>Boendeform</th>
-        <th class="sortable" data-sort-key="country">Land</th>
-        <th class="sortable" data-sort-key="city">Stad/område</th>
       </tr>
     </thead>
     <tbody>
@@ -198,6 +204,30 @@
   </p>
 
   <script>
+        function calculateTotalCost(selectedCups) {
+          const numPlayers = parseInt(document.getElementById('numPlayers').value, 10) || 0;
+          const numCoaches = parseInt(document.getElementById('numCoaches').value, 10) || 0;
+          let total = 0;
+          selectedCups.forEach(cup => {
+            const playerCost = typeof cup.playerCostEurApprox === 'number' ? cup.playerCostEurApprox : 0;
+            const coachCost = typeof cup.leaderCostEurApprox === 'number' ? cup.leaderCostEurApprox : 0;
+            const teamFee = typeof cup.teamFeeEurApprox === 'number' ? cup.teamFeeEurApprox : 0;
+            total += teamFee + (numPlayers * playerCost) + (numCoaches * coachCost);
+          });
+          return total;
+        }
+
+        function updateTotalCostDisplay() {
+          const checkboxes = document.querySelectorAll('.cup-select');
+          const selectedIndexes = Array.from(checkboxes)
+            .filter(cb => cb.checked)
+            .map(cb => parseInt(cb.getAttribute('data-index'), 10));
+          const filtered = applyFilters(cups);
+          const selectedCups = selectedIndexes.map(idx => filtered[idx]).filter(Boolean);
+          const total = calculateTotalCost(selectedCups);
+          const display = document.getElementById('totalCostDisplay');
+          display.textContent = selectedCups.length > 0 ? `Total kostnad: ${total.toLocaleString()} EUR` : '';
+        }
     const monthSelect = document.getElementById("filterMonth");
     const countrySelect = document.getElementById("filterCountry");
     const levelSelect = document.getElementById("filterLevel");
@@ -207,7 +237,9 @@
     const headerCells = document.querySelectorAll("#cupTable thead th.sortable");
 
     let cups = [];
-    let allCups = [];
+    let allCups = [];     // alla cuper från JSON
+    let currentCups = []; // senast renderade (efter filter)
+
     
     let currentSort = {
       key: "startDate",
@@ -215,7 +247,7 @@
     };
 
     function updateCupCount(count) {
-      const el = document.getElementById("cup-count");
+      const el = document.getElementById("cupCounter");
       if (el) {
         el.textContent = `Antal cuper: ${count}`;
       }
@@ -257,6 +289,9 @@
 
         return true;
       });
+
+      currentCups = filtered;
+      renderTable(currentCups); // updateCupCounter körs i renderCups
     }
 
     function compareValues(a, b, key) {
@@ -309,10 +344,10 @@
 
       tableBody.innerHTML = "";
 
-      sorted.forEach(cup => {
+      sorted.forEach((cup, idx) => {
         const tr = document.createElement("tr");
-
         tr.innerHTML = `
+          <td><input type="checkbox" class="cup-select" data-index="${idx}" /></td>
           <td>
             <strong>${cup.name}</strong><br />
             ${
@@ -322,24 +357,35 @@
             }
           </td>
           <td>${cup.dateText || ""}</td>
+          <td>${getCountryFlag(cup.country)} ${cup.country || ""}</td>
+          <td>${cup.city || ""}</td>
+          <td>
+            ${
+              cup.level
+                ? `<span class=\"level-tag ${levelClass(cup.level)}\">${cup.levelDisplay || ""}</span>`
+                : ""
+            }
+          </td>
           <td>${cup.registrationDeadlineText || ""}</td>
           <td>${cup.playerCostText || ""}</td>
           <td>${cup.leaderCostText || ""}</td>
           <td>${cup.teamFeeText || ""}</td>
-          <td>
-            ${
-              cup.level
-                ? `<span class="level-tag ${levelClass(cup.level)}">${cup.levelDisplay || ""}</span>`
-                : ""
-            }
-          </td>
           <td>${cup.accommodation || ""}</td>
-          <td>${cup.country || ""}</td>
-          <td>${cup.city || ""}</td>
         `;
-
         tableBody.appendChild(tr);
       });
+      updateCupCount(sorted.length);
+      // Add event listeners for checkboxes
+      setTimeout(() => {
+        document.querySelectorAll('.cup-select').forEach(cb => {
+          cb.addEventListener('change', updateTotalCostDisplay);
+        });
+        updateTotalCostDisplay();
+      }, 0);
+      // Update the counter to show the filtered count
+      updateCupCount(sorted.length);
+      // update counter to show filtered count
+      updateCupCount(sorted.length);
     }
 
     function setHeaderSortStyles() {
@@ -374,26 +420,59 @@
 
     function initFilters() {
       [monthSelect, countrySelect, levelSelect, maxCostInput, searchInput].forEach(el => {
-        el.addEventListener("input", renderTable);
-        el.addEventListener("change", renderTable);
+        el.addEventListener("input", () => {
+          renderTable();
+          updateTotalCostDisplay();
+        });
+        el.addEventListener("change", () => {
+          renderTable();
+          updateTotalCostDisplay();
+        });
       });
+      document.getElementById('numPlayers').addEventListener('input', updateTotalCostDisplay);
+      document.getElementById('numCoaches').addEventListener('input', updateTotalCostDisplay);
     }
+
+    function updateCupCounter(count) {
+      // Remove this function, use updateCupCount only
+    }
+
 
     async function loadData() {
       try {
         const response = await fetch("cuper_2026_data.json");
         cups = await response.json();
+        updateCupCount(cups.length); // Show total on load
         renderTable();
       } catch (err) {
         console.error("Kunde inte ladda JSON-data:", err);
         tableBody.innerHTML = `
           <tr>
             <td colspan="10" style="color:red;">
-              Kunde inte ladda cuper från <code>cuper_2026_data.json</code>. Kontrollera filnamn och sökväg.!!
+              Kunde inte ladda cuper från <code>cuper_2026_data.json</code>. Kontrollera filnamn och sökväg.
             </td>
           </tr>
         `;
       }
+    }
+
+    // Helper to get country flag emoji or image
+    function getCountryFlag(country) {
+      if (!country) return "";
+      const flags = {
+        "Sverige": "🇸🇪",
+        "Norge": "🇳🇴",
+        "Finland": "🇫🇮",
+        "Danmark": "🇩🇰",
+        "Spanien": "🇪🇸",
+        "Frankrike": "🇫🇷",
+        "Nederländerna": "🇳🇱",
+        "Lettland": "🇱🇻",
+        "Belgien": "🇧🇪",
+        "Italien": "🇮🇹",
+        "Portugal": "🇵🇹"
+      };
+      return flags[country] || "";
     }
 
     initSorting();
