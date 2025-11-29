@@ -4,11 +4,20 @@
   <meta charset="UTF-8" />
   <title>Fotbollscuper 2026 – P11:2</title>
   <style>
+    html, body {
+      height: 100%;
+    }
     body {
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      margin: 20px;
+      margin: 0;
+      padding: 20px;
       background: #f5f5f5;
-      min-height: 100vh;
+      min-height: 100%;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      overflow: hidden;
     }
     .page-header {
       display: flex;
@@ -63,6 +72,32 @@
       border: 1px solid rgba(148, 163, 184, 0.25);
       align-items: flex-start;
     }
+    .filters-section {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .filters-toggle-btn {
+      align-self: flex-start;
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(99, 102, 241, 0.35);
+      background: #eef2ff;
+      color: #1e3a8a;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.2s ease, transform 0.2s ease;
+    }
+    .filters-toggle-btn:hover {
+      background: #e0e7ff;
+      transform: translateY(-1px);
+    }
+    .filters.collapsed {
+      display: none;
+    }
     .filter-group {
       display: flex;
       flex-direction: column;
@@ -72,6 +107,13 @@
       background: linear-gradient(180deg, #f9fbff 0%, #f1f4fb 100%);
       border: 1px solid rgba(99, 102, 241, 0.12);
       box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    }
+    .main-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      min-height: 0;
     }
     .filter-group--wide {
       grid-column: 1 / -1;
@@ -279,7 +321,8 @@
       font-weight: 700;
     }
     .table-scroll {
-      max-height: 90vh;
+      flex: 1;
+      min-height: 0;
       overflow-y: auto;
       position: relative;
     }
@@ -352,101 +395,105 @@
     <h1>Fotbollscuper 2026 – P11:2</h1>
     <div class="cup-count" id="cupCounter"></div>
   </div>
-  <div class="filters">
-    <div class="filter-group filter-group--wide month-filter">
-      <div class="filter-header">
-        <span class="filter-title">Månad(er)</span>
-        <button type="button" id="clearMonthFilter" class="clear-month-btn">Rensa val</button>
+  <div class="main-content">
+    <div class="filters-section">
+      <button type="button" id="toggleFiltersBtn" class="filters-toggle-btn" aria-expanded="true" aria-controls="filtersPanel">Dölj filter</button>
+      <div class="filters" id="filtersPanel">
+      <div class="filter-group filter-group--wide month-filter">
+        <div class="filter-header">
+          <span class="filter-title">Månad(er)</span>
+          <button type="button" id="clearMonthFilter" class="clear-month-btn">Rensa val</button>
+        </div>
+        <div class="month-options">
+          <label class="month-option"><input type="checkbox" class="month-checkbox" value="1" /> Jan</label>
+          <label class="month-option"><input type="checkbox" class="month-checkbox" value="2" /> Feb</label>
+          <label class="month-option"><input type="checkbox" class="month-checkbox" value="3" /> Mar</label>
+          <label class="month-option"><input type="checkbox" class="month-checkbox" value="4" /> Apr</label>
+          <label class="month-option"><input type="checkbox" class="month-checkbox" value="5" /> Maj</label>
+          <label class="month-option"><input type="checkbox" class="month-checkbox" value="6" /> Jun</label>
+          <label class="month-option"><input type="checkbox" class="month-checkbox" value="7" /> Jul</label>
+          <label class="month-option"><input type="checkbox" class="month-checkbox" value="8" /> Aug</label>
+          <label class="month-option"><input type="checkbox" class="month-checkbox" value="9" /> Sep</label>
+          <label class="month-option"><input type="checkbox" class="month-checkbox" value="10" /> Okt</label>
+          <label class="month-option"><input type="checkbox" class="month-checkbox" value="11" /> Nov</label>
+          <label class="month-option"><input type="checkbox" class="month-checkbox" value="12" /> Dec</label>
+        </div>
       </div>
-      <div class="month-options">
-        <label class="month-option"><input type="checkbox" class="month-checkbox" value="1" /> Jan</label>
-        <label class="month-option"><input type="checkbox" class="month-checkbox" value="2" /> Feb</label>
-        <label class="month-option"><input type="checkbox" class="month-checkbox" value="3" /> Mar</label>
-        <label class="month-option"><input type="checkbox" class="month-checkbox" value="4" /> Apr</label>
-        <label class="month-option"><input type="checkbox" class="month-checkbox" value="5" /> Maj</label>
-        <label class="month-option"><input type="checkbox" class="month-checkbox" value="6" /> Jun</label>
-        <label class="month-option"><input type="checkbox" class="month-checkbox" value="7" /> Jul</label>
-        <label class="month-option"><input type="checkbox" class="month-checkbox" value="8" /> Aug</label>
-        <label class="month-option"><input type="checkbox" class="month-checkbox" value="9" /> Sep</label>
-        <label class="month-option"><input type="checkbox" class="month-checkbox" value="10" /> Okt</label>
-        <label class="month-option"><input type="checkbox" class="month-checkbox" value="11" /> Nov</label>
-        <label class="month-option"><input type="checkbox" class="month-checkbox" value="12" /> Dec</label>
+      <div class="filter-group filter-group--wide country-filter">
+        <div class="filter-header">
+          <span class="filter-title">Land</span>
+          <button type="button" id="clearCountryFilter" class="clear-country-btn">Rensa val</button>
+        </div>
+        <div class="country-options">
+          <label class="country-option"><input type="checkbox" class="country-checkbox" value="Sverige" /> <span class="country-flag">🇸🇪</span><span>Sverige</span></label>
+          <label class="country-option"><input type="checkbox" class="country-checkbox" value="Norge" /> <span class="country-flag">🇳🇴</span><span>Norge</span></label>
+          <label class="country-option"><input type="checkbox" class="country-checkbox" value="Finland" /> <span class="country-flag">🇫🇮</span><span>Finland</span></label>
+          <label class="country-option"><input type="checkbox" class="country-checkbox" value="Danmark" /> <span class="country-flag">🇩🇰</span><span>Danmark</span></label>
+          <label class="country-option"><input type="checkbox" class="country-checkbox" value="Spanien" /> <span class="country-flag">🇪🇸</span><span>Spanien</span></label>
+          <label class="country-option"><input type="checkbox" class="country-checkbox" value="Frankrike" /> <span class="country-flag">🇫🇷</span><span>Frankrike</span></label>
+          <label class="country-option"><input type="checkbox" class="country-checkbox" value="Nederländerna" /> <span class="country-flag">🇳🇱</span><span>Nederländerna</span></label>
+          <label class="country-option"><input type="checkbox" class="country-checkbox" value="Lettland" /> <span class="country-flag">🇱🇻</span><span>Lettland</span></label>
+          <label class="country-option"><input type="checkbox" class="country-checkbox" value="Belgien" /> <span class="country-flag">🇧🇪</span><span>Belgien</span></label>
+          <label class="country-option"><input type="checkbox" class="country-checkbox" value="Italien" /> <span class="country-flag">🇮🇹</span><span>Italien</span></label>
+          <label class="country-option"><input type="checkbox" class="country-checkbox" value="Portugal" /> <span class="country-flag">🇵🇹</span><span>Portugal</span></label>
+        </div>
       </div>
-    </div>
-    <div class="filter-group filter-group--wide country-filter">
-      <div class="filter-header">
-        <span class="filter-title">Land</span>
-        <button type="button" id="clearCountryFilter" class="clear-country-btn">Rensa val</button>
+      <div class="filter-group filter-group--wide level-filter">
+        <div class="filter-header">
+          <span class="filter-title">Nivå</span>
+          <button type="button" id="clearLevelFilter" class="clear-country-btn">Rensa val</button>
+        </div>
+        <div class="level-options">
+          <label class="level-option"><input type="checkbox" class="level-checkbox" value="elite" /> <span class="option-emoji" aria-hidden="true">🏆</span><span>Elite</span></label>
+          <label class="level-option"><input type="checkbox" class="level-checkbox" value="bredd" /> <span class="option-emoji" aria-hidden="true">🤝</span><span>Bredd</span></label>
+          <label class="level-option"><input type="checkbox" class="level-checkbox" value="mix" /> <span class="option-emoji" aria-hidden="true">🔄</span><span>Mix</span></label>
+        </div>
       </div>
-      <div class="country-options">
-        <label class="country-option"><input type="checkbox" class="country-checkbox" value="Sverige" /> <span class="country-flag">🇸🇪</span><span>Sverige</span></label>
-        <label class="country-option"><input type="checkbox" class="country-checkbox" value="Norge" /> <span class="country-flag">🇳🇴</span><span>Norge</span></label>
-        <label class="country-option"><input type="checkbox" class="country-checkbox" value="Finland" /> <span class="country-flag">🇫🇮</span><span>Finland</span></label>
-        <label class="country-option"><input type="checkbox" class="country-checkbox" value="Danmark" /> <span class="country-flag">🇩🇰</span><span>Danmark</span></label>
-        <label class="country-option"><input type="checkbox" class="country-checkbox" value="Spanien" /> <span class="country-flag">🇪🇸</span><span>Spanien</span></label>
-        <label class="country-option"><input type="checkbox" class="country-checkbox" value="Frankrike" /> <span class="country-flag">🇫🇷</span><span>Frankrike</span></label>
-        <label class="country-option"><input type="checkbox" class="country-checkbox" value="Nederländerna" /> <span class="country-flag">🇳🇱</span><span>Nederländerna</span></label>
-        <label class="country-option"><input type="checkbox" class="country-checkbox" value="Lettland" /> <span class="country-flag">🇱🇻</span><span>Lettland</span></label>
-        <label class="country-option"><input type="checkbox" class="country-checkbox" value="Belgien" /> <span class="country-flag">🇧🇪</span><span>Belgien</span></label>
-        <label class="country-option"><input type="checkbox" class="country-checkbox" value="Italien" /> <span class="country-flag">🇮🇹</span><span>Italien</span></label>
-        <label class="country-option"><input type="checkbox" class="country-checkbox" value="Portugal" /> <span class="country-flag">🇵🇹</span><span>Portugal</span></label>
+      <div class="filter-group filter-group--wide cost-filter">
+        <div class="filter-header">
+          <span class="filter-title">Priser</span>
+          <button type="button" id="clearCostFilter" class="clear-country-btn">Rensa val</button>
+        </div>
+        <div class="cost-options">
+          <label class="cost-option"><input type="checkbox" class="cost-checkbox" value="with" /> <span class="option-emoji" aria-hidden="true">💰</span><span>Har priser</span></label>
+          <label class="cost-option"><input type="checkbox" class="cost-checkbox" value="without" /> <span class="option-emoji" aria-hidden="true">🚫💰</span><span>Saknar priser</span></label>
+        </div>
       </div>
-    </div>
-    <div class="filter-group filter-group--wide level-filter">
-      <div class="filter-header">
-        <span class="filter-title">Nivå</span>
-        <button type="button" id="clearLevelFilter" class="clear-country-btn">Rensa val</button>
-      </div>
-      <div class="level-options">
-        <label class="level-option"><input type="checkbox" class="level-checkbox" value="elite" /> <span class="option-emoji" aria-hidden="true">🏆</span><span>Elite</span></label>
-        <label class="level-option"><input type="checkbox" class="level-checkbox" value="bredd" /> <span class="option-emoji" aria-hidden="true">🤝</span><span>Bredd</span></label>
-        <label class="level-option"><input type="checkbox" class="level-checkbox" value="mix" /> <span class="option-emoji" aria-hidden="true">🔄</span><span>Mix</span></label>
-      </div>
-    </div>
-    <div class="filter-group filter-group--wide cost-filter">
-      <div class="filter-header">
-        <span class="filter-title">Priser</span>
-        <button type="button" id="clearCostFilter" class="clear-country-btn">Rensa val</button>
-      </div>
-      <div class="cost-options">
-        <label class="cost-option"><input type="checkbox" class="cost-checkbox" value="with" /> <span class="option-emoji" aria-hidden="true">💰</span><span>Har priser</span></label>
-        <label class="cost-option"><input type="checkbox" class="cost-checkbox" value="without" /> <span class="option-emoji" aria-hidden="true">🚫💰</span><span>Saknar priser</span></label>
-      </div>
-    </div>
-  </div>
-  <div class="planning-card">
-    <div class="planning-inputs">
-      <label for="numPlayers" class="planning-label">
-        Antal spelare
-        <input type="number" id="numPlayers" class="planning-control" min="0" value="20" />
-      </label>
-      <label for="numCoaches" class="planning-label">
-        Antal ledare
-        <input type="number" id="numCoaches" class="planning-control" min="0" value="4" />
-      </label>
-    </div>
-    <div class="planning-total">
-      <div class="planning-total-line">
-        <span class="planning-total-label">Pris per spelare</span>
-        <span class="planning-total-value" id="playerCostDisplay">–</span>
-      </div>
-      <div class="planning-total-line">
-        <span class="planning-total-label">Pris per ledare</span>
-        <span class="planning-total-value" id="leaderCostDisplay">–</span>
-      </div>
-      <div class="planning-total-line">
-        <span class="planning-total-label">Pris för lag</span>
-        <span class="planning-total-value" id="teamCostDisplay">–</span>
-      </div>
-      <div class="planning-total-line planning-total-line--total">
-        <span class="planning-total-label">Total kostnad</span>
-        <span class="planning-total-value" id="totalCostDisplay">–</span>
       </div>
     </div>
-  </div>
-  <div class="table-scroll">
-    <table>
-      <thead>
+    <div class="planning-card">
+      <div class="planning-inputs">
+        <label for="numPlayers" class="planning-label">
+          Antal spelare
+          <input type="number" id="numPlayers" class="planning-control" min="0" value="20" />
+        </label>
+        <label for="numCoaches" class="planning-label">
+          Antal ledare
+          <input type="number" id="numCoaches" class="planning-control" min="0" value="4" />
+        </label>
+      </div>
+      <div class="planning-total">
+        <div class="planning-total-line">
+          <span class="planning-total-label">Pris per spelare</span>
+          <span class="planning-total-value" id="playerCostDisplay">–</span>
+        </div>
+        <div class="planning-total-line">
+          <span class="planning-total-label">Pris per ledare</span>
+          <span class="planning-total-value" id="leaderCostDisplay">–</span>
+        </div>
+        <div class="planning-total-line">
+          <span class="planning-total-label">Pris för lag</span>
+          <span class="planning-total-value" id="teamCostDisplay">–</span>
+        </div>
+        <div class="planning-total-line planning-total-line--total">
+          <span class="planning-total-label">Total kostnad</span>
+          <span class="planning-total-value" id="totalCostDisplay">–</span>
+        </div>
+      </div>
+    </div>
+    <div class="table-scroll">
+      <table>
+        <thead>
         <tr>
           <th></th>
           <th data-sort-key="name" class="sortable">Cup</th>
@@ -464,17 +511,18 @@
           <th data-sort-key="teamFeeEurApprox" class="sortable">Lagkostnad (SEK)</th>
           <th data-sort-key="accommodation" class="sortable">Boende</th>
         </tr>
-      </thead>
-      <tbody id="tableBody"></tbody>
-    </table>
+        </thead>
+        <tbody id="tableBody"></tbody>
+      </table>
+      <p class="note">
+        * Sista anmälningsdatum och kostnader ändras ofta år till år och var inte
+        alltid publicerade för 2026 när denna fil skapades. Använd tabellen som
+        utgångspunkt och dubbelkolla alltid på cupens officiella webbsida eller hos
+        din researrangör innan ni bestämmer er eller gör budget.
+      </p>
+    </div>
   </div>
-  <p class="note">
-    * Sista anmälningsdatum och kostnader ändras ofta år till år och var inte
-    alltid publicerade för 2026 när denna fil skapades. Använd tabellen som
-    utgångspunkt och dubbelkolla alltid på cupens officiella webbsida eller hos
-    din researrangör innan ni bestämmer er eller gör budget.
-  </p>
-    <script>
+  <script>
       const monthNames = [
           'januari',
           'februari',
@@ -563,6 +611,8 @@
     // Globala variabler och DOM-element
     let cups = [];
     let currentCups = [];
+    const filtersPanel = document.getElementById('filtersPanel');
+    const toggleFiltersBtn = document.getElementById('toggleFiltersBtn');
     const monthCheckboxes = Array.from(document.querySelectorAll('.month-checkbox'));
     const clearMonthFilterBtn = document.getElementById('clearMonthFilter');
     const countryCheckboxes = Array.from(document.querySelectorAll('.country-checkbox'));
@@ -808,6 +858,15 @@
       setHeaderSortStyles();
     }
 
+    function initFilterToggle() {
+      if (!filtersPanel || !toggleFiltersBtn) return;
+      toggleFiltersBtn.addEventListener('click', () => {
+        const isCollapsed = filtersPanel.classList.toggle('collapsed');
+        toggleFiltersBtn.setAttribute('aria-expanded', (!isCollapsed).toString());
+        toggleFiltersBtn.textContent = isCollapsed ? 'Visa filter' : 'Dölj filter';
+      });
+    }
+
     function initFilters() {
       monthCheckboxes.forEach(cb => {
         cb.addEventListener('change', () => {
@@ -912,6 +971,7 @@
     }
 
     initSorting();
+    initFilterToggle();
     initFilters();
     loadData();
   </script>
