@@ -353,6 +353,7 @@
     th.sortable {
       cursor: pointer;
       user-select: none;
+      white-space: nowrap;
     }
     th.sortable::after {
       content: " ⇅";
@@ -403,26 +404,26 @@
   </div>
   <div class="main-content">
     <div class="filters-section">
-      <button type="button" id="toggleFiltersBtn" class="filters-toggle-btn" aria-expanded="true" aria-controls="filtersPanel">Dölj filter</button>
-      <div class="filters" id="filtersPanel">
+      <button type="button" id="toggleFiltersBtn" class="filters-toggle-btn" aria-expanded="false" aria-controls="filtersPanel">Visa filter</button>
+      <div class="filters collapsed" id="filtersPanel">
       <div class="filter-group filter-group--wide month-filter">
         <div class="filter-header">
           <span class="filter-title">Månad(er)</span>
           <button type="button" id="clearMonthFilter" class="clear-month-btn">Rensa val</button>
         </div>
         <div class="month-options">
-          <label class="month-option"><input type="checkbox" class="month-checkbox" value="1" /> Jan</label>
-          <label class="month-option"><input type="checkbox" class="month-checkbox" value="2" /> Feb</label>
-          <label class="month-option"><input type="checkbox" class="month-checkbox" value="3" /> Mar</label>
-          <label class="month-option"><input type="checkbox" class="month-checkbox" value="4" /> Apr</label>
-          <label class="month-option"><input type="checkbox" class="month-checkbox" value="5" /> Maj</label>
-          <label class="month-option"><input type="checkbox" class="month-checkbox" value="6" /> Jun</label>
-          <label class="month-option"><input type="checkbox" class="month-checkbox" value="7" /> Jul</label>
-          <label class="month-option"><input type="checkbox" class="month-checkbox" value="8" /> Aug</label>
-          <label class="month-option"><input type="checkbox" class="month-checkbox" value="9" /> Sep</label>
-          <label class="month-option"><input type="checkbox" class="month-checkbox" value="10" /> Okt</label>
-          <label class="month-option"><input type="checkbox" class="month-checkbox" value="11" /> Nov</label>
-          <label class="month-option"><input type="checkbox" class="month-checkbox" value="12" /> Dec</label>
+          <label class="month-option"><input type="checkbox" class="month-checkbox" value="1" /> <span class="option-emoji" aria-hidden="true">❄️</span><span>Jan</span></label>
+          <label class="month-option"><input type="checkbox" class="month-checkbox" value="2" /> <span class="option-emoji" aria-hidden="true">💘</span><span>Feb</span></label>
+          <label class="month-option"><input type="checkbox" class="month-checkbox" value="3" /> <span class="option-emoji" aria-hidden="true">🌱</span><span>Mar</span></label>
+          <label class="month-option"><input type="checkbox" class="month-checkbox" value="4" /> <span class="option-emoji" aria-hidden="true">🐣</span><span>Apr</span></label>
+          <label class="month-option"><input type="checkbox" class="month-checkbox" value="5" /> <span class="option-emoji" aria-hidden="true">🌸</span><span>Maj</span></label>
+          <label class="month-option"><input type="checkbox" class="month-checkbox" value="6" /> <span class="option-emoji" aria-hidden="true">☀️</span><span>Jun</span></label>
+          <label class="month-option"><input type="checkbox" class="month-checkbox" value="7" /> <span class="option-emoji" aria-hidden="true">🏖️</span><span>Jul</span></label>
+          <label class="month-option"><input type="checkbox" class="month-checkbox" value="8" /> <span class="option-emoji" aria-hidden="true">🍦</span><span>Aug</span></label>
+          <label class="month-option"><input type="checkbox" class="month-checkbox" value="9" /> <span class="option-emoji" aria-hidden="true">🍂</span><span>Sep</span></label>
+          <label class="month-option"><input type="checkbox" class="month-checkbox" value="10" /> <span class="option-emoji" aria-hidden="true">🎃</span><span>Okt</span></label>
+          <label class="month-option"><input type="checkbox" class="month-checkbox" value="11" /> <span class="option-emoji" aria-hidden="true">🕯️</span><span>Nov</span></label>
+          <label class="month-option"><input type="checkbox" class="month-checkbox" value="12" /> <span class="option-emoji" aria-hidden="true">🎄</span><span>Dec</span></label>
         </div>
       </div>
       <div class="filter-group filter-group--wide country-filter">
@@ -461,7 +462,7 @@
           <button type="button" id="clearCostFilter" class="clear-country-btn">Rensa val</button>
         </div>
         <div class="cost-options">
-          <label class="cost-option"><input type="checkbox" class="cost-checkbox" value="with" /> <span class="option-emoji" aria-hidden="true">💰</span><span>Har priser</span></label>
+          <label class="cost-option"><input type="checkbox" class="cost-checkbox" value="with" checked /> <span class="option-emoji" aria-hidden="true">💰</span><span>Har priser</span></label>
           <label class="cost-option"><input type="checkbox" class="cost-checkbox" value="without" /> <span class="option-emoji" aria-hidden="true">🚫💰</span><span>Saknar priser</span></label>
         </div>
       </div>
@@ -510,11 +511,11 @@
           <th data-sort-key="level" class="sortable">Nivå</th>
           <th data-sort-key="registrationDeadline" class="sortable">Sista anmälan</th>
           <th data-sort-key="playerCostText" class="sortable">Spelarkostnad info</th>
-          <th data-sort-key="playerCostEurApprox" class="sortable">Spelarkostnad (SEK)</th>
+          <th data-sort-key="playerCostEurApprox" class="sortable">Spelarkostnad</th>
           <th data-sort-key="leaderCostText" class="sortable">Ledarkostnad info</th>
-          <th data-sort-key="leaderCostEurApprox" class="sortable">Ledarkostnad (SEK)</th>
+          <th data-sort-key="leaderCostEurApprox" class="sortable">Ledarkostnad</th>
           <th data-sort-key="teamFeeText" class="sortable">Lagkostnad info</th>
-          <th data-sort-key="teamFeeEurApprox" class="sortable">Lagkostnad (SEK)</th>
+          <th data-sort-key="teamFeeEurApprox" class="sortable">Lagkostnad</th>
           <th data-sort-key="accommodation" class="sortable">Boende</th>
         </tr>
         </thead>
