@@ -16,84 +16,6 @@
     small {
       color: #555;
     }
-    .filters {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      padding: 12px;
-      background: #ffffff;
-      border-radius: 8px;
-      margin-bottom: 0;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
-    .filters label {
-      font-size: 14px;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-    .filters select,
-    .filters input {
-      padding: 4px 6px;
-      font-size: 14px;
-    }
-    .table-scroll {
-      position: relative;
-      margin-top: 0;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      background: #ffffff;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.1);
-    }
-    th, td {
-      padding: 12px 10px;
-      border-bottom: 1px solid #eee;
-      font-size: 13px;
-      vertical-align: top;
-    }
-    th {
-      background: #fafafa;
-      position: sticky;
-      top: 0px;
-      z-index: 10;
-    }
-    th.sortable {
-      cursor: pointer;
-      user-select: none;
-    }
-    th.sortable::after {
-      content: " ⇅";
-      font-size: 11px;
-      color: #888;
-    }
-    th.sorted-asc::after {
-      content: " ↑";
-      font-size: 11px;
-      color: #000;
-    }
-    th.sorted-desc::after {
-      content: " ↓";
-      font-size: 11px;
-      color: #000;
-    }
-    tr:nth-child(even) td {
-      background: #fcfcfc;
-    }
-    .level-tag {
-      display: inline-block;
-      padding: 2px 6px;
-      border-radius: 999px;
-      font-size: 11px;
-      background: #eef;
-    }
-    .level-elite { background: #ffe5e5; }
-    .level-bredd { background: #e5ffe8; }
-    .level-mix   { background: #fff7e0; }
     .note {
       font-size: 12px;
       color: #666;
@@ -110,32 +32,116 @@
       font-weight: 600;
       margin: 0.5rem 0 1rem;
     }
-    small {
-      color: #555;
-    }
     .filters {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      padding: 12px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      padding: 16px;
       background: #ffffff;
-      border-radius: 8px;
+      border-radius: 12px;
       margin: 16px 0;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      box-shadow: 0 12px 32px rgba(15, 23, 42, 0.08);
       position: sticky;
       top: 0;
       z-index: 100;
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      align-items: flex-start;
     }
-    .filters label {
-      font-size: 14px;
+    .filter-group {
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      gap: 8px;
+      padding: 14px;
+      border-radius: 12px;
+      background: linear-gradient(180deg, #f9fbff 0%, #f1f4fb 100%);
+      border: 1px solid rgba(99, 102, 241, 0.12);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
     }
-    .filters select,
-    .filters input {
-      padding: 4px 6px;
+    .filter-group--wide {
+      grid-column: 1 / -1;
+    }
+    .filter-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .filter-title {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: #334155;
+    }
+    .filter-control {
+      padding: 8px 10px;
+      border-radius: 8px;
+      border: 1px solid #cbd5f0;
       font-size: 14px;
+      background: #ffffff;
+      box-shadow: 0 1px 2px rgba(15, 23, 42, 0.08);
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      width: 100%;
+    }
+    .filter-control:focus {
+      outline: none;
+      border-color: #2563eb;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+    }
+    .month-filter,
+    .country-filter {
+      gap: 12px;
+    }
+    .month-options,
+    .country-options {
+      display: grid;
+      gap: 6px 12px;
+      padding: 12px;
+      border-radius: 10px;
+      background: #ffffff;
+      border: 1px dashed rgba(99, 102, 241, 0.25);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+    }
+    .month-options {
+      grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+    }
+    .country-options {
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    }
+    .month-option,
+    .country-option {
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: #1f2937;
+    }
+    .country-flag {
+      font-size: 18px;
+      line-height: 1;
+    }
+    .filter-group input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+      accent-color: #2563eb;
+    }
+    .clear-month-btn,
+    .clear-country-btn {
+      padding: 6px 12px;
+      font-size: 12px;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      color: #1e3a8a;
+      background: #eef2ff;
+      border: 1px solid rgba(99, 102, 241, 0.35);
+      border-radius: 999px;
+      cursor: pointer;
+      transition: background 0.2s ease, transform 0.2s ease;
+    }
+    .clear-month-btn:hover,
+    .clear-country-btn:hover {
+      background: #e0e7ff;
+      transform: translateY(-1px);
     }
     .table-scroll {
       max-height: 90vh;
@@ -213,66 +219,78 @@
 <body>
   <h1>Fotbollscuper 2026 – P11:2</h1>
   <div class="filters">
-    <label>Månad(er)
-      <select id="monthSelect" multiple size="6">
-        <option value="">Alla</option>
-        <option value="1">Januari</option>
-        <option value="2">Februari</option>
-        <option value="3">Mars</option>
-        <option value="4">April</option>
-        <option value="5">Maj</option>
-        <option value="6">Juni</option>
-        <option value="7">Juli</option>
-        <option value="8">Augusti</option>
-        <option value="9">September</option>
-        <option value="10">Oktober</option>
-        <option value="11">November</option>
-        <option value="12">December</option>
-      </select>
-    </label>
-    <label>Land
-      <select id="countrySelect">
-        <option value="">Alla</option>
-        <option value="Sverige">Sverige</option>
-        <option value="Norge">Norge</option>
-        <option value="Finland">Finland</option>
-        <option value="Danmark">Danmark</option>
-        <option value="Spanien">Spanien</option>
-        <option value="Frankrike">Frankrike</option>
-        <option value="Nederländerna">Nederländerna</option>
-        <option value="Lettland">Lettland</option>
-        <option value="Belgien">Belgien</option>
-        <option value="Italien">Italien</option>
-        <option value="Portugal">Portugal</option>
-      </select>
-    </label>
-    <label>Nivå
-      <select id="levelSelect">
+    <div class="filter-group filter-group--wide month-filter">
+      <div class="filter-header">
+        <span class="filter-title">Månad(er)</span>
+        <button type="button" id="clearMonthFilter" class="clear-month-btn">Rensa val</button>
+      </div>
+      <div class="month-options">
+        <label class="month-option"><input type="checkbox" class="month-checkbox" value="1" /> Jan</label>
+        <label class="month-option"><input type="checkbox" class="month-checkbox" value="2" /> Feb</label>
+        <label class="month-option"><input type="checkbox" class="month-checkbox" value="3" /> Mar</label>
+        <label class="month-option"><input type="checkbox" class="month-checkbox" value="4" /> Apr</label>
+        <label class="month-option"><input type="checkbox" class="month-checkbox" value="5" /> Maj</label>
+        <label class="month-option"><input type="checkbox" class="month-checkbox" value="6" /> Jun</label>
+        <label class="month-option"><input type="checkbox" class="month-checkbox" value="7" /> Jul</label>
+        <label class="month-option"><input type="checkbox" class="month-checkbox" value="8" /> Aug</label>
+        <label class="month-option"><input type="checkbox" class="month-checkbox" value="9" /> Sep</label>
+        <label class="month-option"><input type="checkbox" class="month-checkbox" value="10" /> Okt</label>
+        <label class="month-option"><input type="checkbox" class="month-checkbox" value="11" /> Nov</label>
+        <label class="month-option"><input type="checkbox" class="month-checkbox" value="12" /> Dec</label>
+      </div>
+    </div>
+    <div class="filter-group filter-group--wide country-filter">
+      <div class="filter-header">
+        <span class="filter-title">Land</span>
+        <button type="button" id="clearCountryFilter" class="clear-country-btn">Rensa val</button>
+      </div>
+      <div class="country-options">
+        <label class="country-option"><input type="checkbox" class="country-checkbox" value="Sverige" /> <span class="country-flag">🇸🇪</span><span>Sverige</span></label>
+        <label class="country-option"><input type="checkbox" class="country-checkbox" value="Norge" /> <span class="country-flag">🇳🇴</span><span>Norge</span></label>
+        <label class="country-option"><input type="checkbox" class="country-checkbox" value="Finland" /> <span class="country-flag">🇫🇮</span><span>Finland</span></label>
+        <label class="country-option"><input type="checkbox" class="country-checkbox" value="Danmark" /> <span class="country-flag">🇩🇰</span><span>Danmark</span></label>
+        <label class="country-option"><input type="checkbox" class="country-checkbox" value="Spanien" /> <span class="country-flag">🇪🇸</span><span>Spanien</span></label>
+        <label class="country-option"><input type="checkbox" class="country-checkbox" value="Frankrike" /> <span class="country-flag">🇫🇷</span><span>Frankrike</span></label>
+        <label class="country-option"><input type="checkbox" class="country-checkbox" value="Nederländerna" /> <span class="country-flag">🇳🇱</span><span>Nederländerna</span></label>
+        <label class="country-option"><input type="checkbox" class="country-checkbox" value="Lettland" /> <span class="country-flag">🇱🇻</span><span>Lettland</span></label>
+        <label class="country-option"><input type="checkbox" class="country-checkbox" value="Belgien" /> <span class="country-flag">🇧🇪</span><span>Belgien</span></label>
+        <label class="country-option"><input type="checkbox" class="country-checkbox" value="Italien" /> <span class="country-flag">🇮🇹</span><span>Italien</span></label>
+        <label class="country-option"><input type="checkbox" class="country-checkbox" value="Portugal" /> <span class="country-flag">🇵🇹</span><span>Portugal</span></label>
+      </div>
+    </div>
+    <div class="filter-group">
+      <label for="levelSelect" class="filter-title">Nivå</label>
+      <select id="levelSelect" class="filter-control">
         <option value="">Alla</option>
         <option value="elite">Elite</option>
         <option value="bredd">Bredd</option>
         <option value="mix">Mix</option>
       </select>
-    </label>
-    <label>Max spelarkostnad (SEK)
-      <input type="number" id="maxCostInput" min="0" />
-    </label>
-    <label>Kostnadsdata
-      <select id="costFilter">
+    </div>
+    <div class="filter-group">
+      <label for="maxCostInput" class="filter-title">Max spelarkostnad (SEK)</label>
+      <input type="number" id="maxCostInput" class="filter-control" min="0" />
+    </div>
+    <div class="filter-group">
+      <label for="costFilter" class="filter-title">Kostnadsdata</label>
+      <select id="costFilter" class="filter-control">
         <option value="">Alla</option>
         <option value="with">Har kostnader</option>
         <option value="without">Saknar kostnader</option>
       </select>
-    </label>
-    <label>Sök
-      <input type="text" id="searchInput" placeholder="Cup, stad, land..." />
-    </label>
-    <label>Antal spelare
-      <input type="number" id="numPlayers" min="0" value="15" />
-    </label>
-    <label>Antal ledare
-      <input type="number" id="numCoaches" min="0" value="3" />
-    </label>
+    </div>
+    <div class="filter-group">
+      <label for="searchInput" class="filter-title">Sök</label>
+      <input type="text" id="searchInput" class="filter-control" placeholder="Cup, stad, land..." />
+    </div>
+    <div class="filter-group">
+      <label for="numPlayers" class="filter-title">Antal spelare</label>
+      <input type="number" id="numPlayers" class="filter-control" min="0" value="15" />
+    </div>
+    <div class="filter-group">
+      <label for="numCoaches" class="filter-title">Antal ledare</label>
+      <input type="number" id="numCoaches" class="filter-control" min="0" value="3" />
+    </div>
   </div>
   <div class="cup-count" id="cupCounter"></div>
   <div id="totalCostDisplay"></div>
@@ -355,8 +373,10 @@
     // Globala variabler och DOM-element
     let cups = [];
     let currentCups = [];
-    const monthSelect = document.getElementById('monthSelect');
-    const countrySelect = document.getElementById('countrySelect');
+    const monthCheckboxes = Array.from(document.querySelectorAll('.month-checkbox'));
+    const clearMonthFilterBtn = document.getElementById('clearMonthFilter');
+    const countryCheckboxes = Array.from(document.querySelectorAll('.country-checkbox'));
+    const clearCountryFilterBtn = document.getElementById('clearCountryFilter');
     const levelSelect = document.getElementById('levelSelect');
     const maxCostInput = document.getElementById('maxCostInput');
     const costFilter = document.getElementById('costFilter');
@@ -431,14 +451,13 @@
     }
 
     function applyFilters(cupsArray) {
-      const selectedMonthValues = Array.from(monthSelect.selectedOptions || [])
-        .map(option => option.value)
-        .filter(value => value !== "");
-      const monthFilterIndices = selectedMonthValues
-        .map(value => parseInt(value, 10))
-        .filter(num => !Number.isNaN(num))
-        .map(num => num - 1);
-      const country = countrySelect.value;
+      const monthFilterIndices = monthCheckboxes
+        .filter(cb => cb.checked)
+        .map(cb => parseInt(cb.value, 10) - 1)
+        .filter(idx => idx >= 0 && idx < 12);
+      const selectedCountries = countryCheckboxes
+        .filter(cb => cb.checked)
+        .map(cb => cb.value);
       const level = levelSelect.value;
       const maxCost = maxCostInput.value ? parseFloat(maxCostInput.value) : null;
       const costAvailability = costFilter.value;
@@ -450,7 +469,7 @@
           const matches = monthFilterIndices.some(idx => indices.includes(idx));
           if (!matches) return false;
         }
-        if (country && cup.country !== country) return false;
+        if (selectedCountries.length > 0 && !selectedCountries.includes(cup.country)) return false;
         if (level && cup.level !== level) return false;
 
         if (costAvailability === "with" && !cupHasAnyCost(cup)) return false;
@@ -470,9 +489,6 @@
 
         return true;
       });
-
-      currentCups = filtered;
-      renderTable(currentCups); // updateCupCounter körs i renderCups
     }
 
     function compareValues(a, b, key) {
@@ -608,7 +624,7 @@
     }
 
     function initFilters() {
-      [monthSelect, countrySelect, levelSelect, maxCostInput, costFilter, searchInput].forEach(el => {
+      [levelSelect, maxCostInput, costFilter, searchInput].forEach(el => {
         el.addEventListener("input", () => {
           renderTable();
           updateTotalCostDisplay();
@@ -618,6 +634,36 @@
           updateTotalCostDisplay();
         });
       });
+      monthCheckboxes.forEach(cb => {
+        cb.addEventListener('change', () => {
+          renderTable();
+          updateTotalCostDisplay();
+        });
+      });
+      countryCheckboxes.forEach(cb => {
+        cb.addEventListener('change', () => {
+          renderTable();
+          updateTotalCostDisplay();
+        });
+      });
+      if (clearMonthFilterBtn) {
+        clearMonthFilterBtn.addEventListener('click', () => {
+          monthCheckboxes.forEach(cb => {
+            cb.checked = false;
+          });
+          renderTable();
+          updateTotalCostDisplay();
+        });
+      }
+      if (clearCountryFilterBtn) {
+        clearCountryFilterBtn.addEventListener('click', () => {
+          countryCheckboxes.forEach(cb => {
+            cb.checked = false;
+          });
+          renderTable();
+          updateTotalCostDisplay();
+        });
+      }
       document.getElementById('numPlayers').addEventListener('input', updateTotalCostDisplay);
       document.getElementById('numCoaches').addEventListener('input', updateTotalCostDisplay);
     }
