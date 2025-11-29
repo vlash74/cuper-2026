@@ -57,6 +57,12 @@
     a {
       color: #0b66c3;
     }
+    .cup-link {
+      text-decoration: none;
+    }
+    .cup-link:hover {
+      text-decoration: underline;
+    }
     .filters {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -782,16 +788,13 @@
           enrichCupWithMonths(cup);
         }
         const tr = document.createElement("tr");
+        const cupNameCell = cup.url
+          ? `<a href="${cup.url}" target="_blank" rel="noopener" class="cup-link"><strong>${cup.name}</strong></a>`
+          : `<strong>${cup.name}</strong>`;
+
         tr.innerHTML = `
           <td><input type="checkbox" class="cup-select" data-index="${idx}" /></td>
-          <td>
-            <strong>${cup.name}</strong><br />
-            ${
-              cup.url
-                ? `<a href="${cup.url}" target="_blank">Länk</a>`
-                : ""
-            }
-          </td>
+          <td>${cupNameCell}</td>
           <td>${cup.dateText || ""}</td>
           <td class="hidden">${cup.monthsDisplay || ""}</td>
           <td>${getCountryFlag(cup.country)} ${cup.country || ""}</td>
