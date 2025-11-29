@@ -10,8 +10,28 @@
       background: #f5f5f5;
       min-height: 100vh;
     }
+    .page-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+    }
     h1 {
       margin-bottom: 0;
+    }
+    #cupCounter {
+      align-self: center;
+      padding: 10px 18px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+      color: #ffffff;
+      font-weight: 700;
+      font-size: 18px;
+      letter-spacing: 0.04em;
+      box-shadow: 0 12px 24px rgba(37, 99, 235, 0.25);
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      min-width: 180px;
+      text-align: center;
     }
     small {
       color: #555;
@@ -27,10 +47,6 @@
     }
     a {
       color: #0b66c3;
-    }
-    .cup-count {
-      font-weight: 600;
-      margin: 0.5rem 0 1rem;
     }
     .filters {
       display: grid;
@@ -93,7 +109,9 @@
       gap: 12px;
     }
     .month-options,
-    .country-options {
+    .country-options,
+    .level-options,
+    .cost-options {
       display: grid;
       gap: 6px 12px;
       padding: 12px;
@@ -108,15 +126,48 @@
     .country-options {
       grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
     }
+    .level-options {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 10px;
+      align-items: stretch;
+    }
+    .cost-options {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 10px;
+      align-items: stretch;
+    }
     .month-option,
-    .country-option {
+    .country-option,
+    .level-option,
+    .cost-option {
       font-size: 13px;
       display: flex;
       align-items: center;
       gap: 6px;
       color: #1f2937;
     }
+    .level-option,
+    .cost-option {
+      width: 100%;
+      padding: 6px 8px;
+      border-radius: 8px;
+      border: none;
+      background: transparent;
+      box-shadow: none;
+      justify-content: flex-start;
+      transition: background 0.2s ease;
+    }
+    .level-option:hover,
+    .cost-option:hover {
+      background: rgba(99, 102, 241, 0.12);
+    }
     .country-flag {
+      font-size: 18px;
+      line-height: 1;
+    }
+    .option-emoji {
       font-size: 18px;
       line-height: 1;
     }
@@ -124,6 +175,7 @@
       width: 16px;
       height: 16px;
       accent-color: #2563eb;
+      flex-shrink: 0;
     }
     .clear-month-btn,
     .clear-country-btn {
@@ -142,6 +194,89 @@
     .clear-country-btn:hover {
       background: #e0e7ff;
       transform: translateY(-1px);
+    }
+    .planning-card {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 16px;
+      margin-bottom: 16px;
+      border-radius: 12px;
+      background: #ffffff;
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+    }
+    .planning-inputs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .planning-label {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      color: #334155;
+    }
+    .planning-control {
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: 1px solid #cbd5f0;
+      font-size: 14px;
+      width: 140px;
+      box-shadow: 0 1px 2px rgba(15, 23, 42, 0.08);
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .planning-control:focus {
+      outline: none;
+      border-color: #2563eb;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+    }
+    .planning-total {
+      flex: 1 1 260px;
+      min-width: 260px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      color: #1f2937;
+    }
+    .planning-total-line {
+      display: grid;
+      grid-template-columns: max-content auto;
+      align-items: baseline;
+      justify-content: end;
+      column-gap: 6px;
+      font-size: 14px;
+    }
+    .planning-total-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: #475569;
+      text-align: right;
+    }
+    .planning-total-label::after {
+      content: ':';
+      margin-left: 4px;
+    }
+    .planning-total-value {
+      font-size: 15px;
+      font-weight: 600;
+      color: #1e3a8a;
+    }
+    .planning-total-line--total .planning-total-label {
+      font-size: 12px;
+      color: #1e3a8a;
+    }
+    .planning-total-line--total .planning-total-value {
+      font-size: 18px;
+      font-weight: 700;
     }
     .table-scroll {
       max-height: 90vh;
@@ -210,14 +345,13 @@
     a {
       color: #0b66c3;
     }
-    .cup-count {
-      font-weight: 600;
-      margin: 0.5rem 0 1rem;
-    }
   </style>
 </head>
 <body>
-  <h1>Fotbollscuper 2026 – P11:2</h1>
+  <div class="page-header">
+    <h1>Fotbollscuper 2026 – P11:2</h1>
+    <div class="cup-count" id="cupCounter"></div>
+  </div>
   <div class="filters">
     <div class="filter-group filter-group--wide month-filter">
       <div class="filter-header">
@@ -258,42 +392,58 @@
         <label class="country-option"><input type="checkbox" class="country-checkbox" value="Portugal" /> <span class="country-flag">🇵🇹</span><span>Portugal</span></label>
       </div>
     </div>
-    <div class="filter-group">
-      <label for="levelSelect" class="filter-title">Nivå</label>
-      <select id="levelSelect" class="filter-control">
-        <option value="">Alla</option>
-        <option value="elite">Elite</option>
-        <option value="bredd">Bredd</option>
-        <option value="mix">Mix</option>
-      </select>
+    <div class="filter-group filter-group--wide level-filter">
+      <div class="filter-header">
+        <span class="filter-title">Nivå</span>
+        <button type="button" id="clearLevelFilter" class="clear-country-btn">Rensa val</button>
+      </div>
+      <div class="level-options">
+        <label class="level-option"><input type="checkbox" class="level-checkbox" value="elite" /> <span class="option-emoji" aria-hidden="true">🏆</span><span>Elite</span></label>
+        <label class="level-option"><input type="checkbox" class="level-checkbox" value="bredd" /> <span class="option-emoji" aria-hidden="true">🤝</span><span>Bredd</span></label>
+        <label class="level-option"><input type="checkbox" class="level-checkbox" value="mix" /> <span class="option-emoji" aria-hidden="true">🔄</span><span>Mix</span></label>
+      </div>
     </div>
-    <div class="filter-group">
-      <label for="maxCostInput" class="filter-title">Max spelarkostnad (SEK)</label>
-      <input type="number" id="maxCostInput" class="filter-control" min="0" />
-    </div>
-    <div class="filter-group">
-      <label for="costFilter" class="filter-title">Kostnadsdata</label>
-      <select id="costFilter" class="filter-control">
-        <option value="">Alla</option>
-        <option value="with">Har kostnader</option>
-        <option value="without">Saknar kostnader</option>
-      </select>
-    </div>
-    <div class="filter-group">
-      <label for="searchInput" class="filter-title">Sök</label>
-      <input type="text" id="searchInput" class="filter-control" placeholder="Cup, stad, land..." />
-    </div>
-    <div class="filter-group">
-      <label for="numPlayers" class="filter-title">Antal spelare</label>
-      <input type="number" id="numPlayers" class="filter-control" min="0" value="15" />
-    </div>
-    <div class="filter-group">
-      <label for="numCoaches" class="filter-title">Antal ledare</label>
-      <input type="number" id="numCoaches" class="filter-control" min="0" value="3" />
+    <div class="filter-group filter-group--wide cost-filter">
+      <div class="filter-header">
+        <span class="filter-title">Priser</span>
+        <button type="button" id="clearCostFilter" class="clear-country-btn">Rensa val</button>
+      </div>
+      <div class="cost-options">
+        <label class="cost-option"><input type="checkbox" class="cost-checkbox" value="with" /> <span class="option-emoji" aria-hidden="true">💰</span><span>Har priser</span></label>
+        <label class="cost-option"><input type="checkbox" class="cost-checkbox" value="without" /> <span class="option-emoji" aria-hidden="true">🚫💰</span><span>Saknar priser</span></label>
+      </div>
     </div>
   </div>
-  <div class="cup-count" id="cupCounter"></div>
-  <div id="totalCostDisplay"></div>
+  <div class="planning-card">
+    <div class="planning-inputs">
+      <label for="numPlayers" class="planning-label">
+        Antal spelare
+        <input type="number" id="numPlayers" class="planning-control" min="0" value="20" />
+      </label>
+      <label for="numCoaches" class="planning-label">
+        Antal ledare
+        <input type="number" id="numCoaches" class="planning-control" min="0" value="4" />
+      </label>
+    </div>
+    <div class="planning-total">
+      <div class="planning-total-line">
+        <span class="planning-total-label">Pris per spelare</span>
+        <span class="planning-total-value" id="playerCostDisplay">–</span>
+      </div>
+      <div class="planning-total-line">
+        <span class="planning-total-label">Pris per ledare</span>
+        <span class="planning-total-value" id="leaderCostDisplay">–</span>
+      </div>
+      <div class="planning-total-line">
+        <span class="planning-total-label">Pris för lag</span>
+        <span class="planning-total-value" id="teamCostDisplay">–</span>
+      </div>
+      <div class="planning-total-line planning-total-line--total">
+        <span class="planning-total-label">Total kostnad</span>
+        <span class="planning-total-value" id="totalCostDisplay">–</span>
+      </div>
+    </div>
+  </div>
   <div class="table-scroll">
     <table>
       <thead>
@@ -324,8 +474,8 @@
     utgångspunkt och dubbelkolla alltid på cupens officiella webbsida eller hos
     din researrangör innan ni bestämmer er eller gör budget.
   </p>
-  <script>
-        const monthNames = [
+    <script>
+      const monthNames = [
           'januari',
           'februari',
           'mars',
@@ -360,15 +510,55 @@
           const selectedCups = selectedIndexes.map(idx => currentCups[idx]).filter(Boolean);
           const numPlayers = parseInt(document.getElementById('numPlayers').value, 10) || 0;
           const numCoaches = parseInt(document.getElementById('numCoaches').value, 10) || 0;
-          let total = 0;
-          selectedCups.forEach(cup => {
-            const playerCost = typeof cup.playerCostEurApprox === 'number' ? cup.playerCostEurApprox : 0;
-            const coachCost = typeof cup.leaderCostEurApprox === 'number' ? cup.leaderCostEurApprox : 0;
-            const teamFee = typeof cup.teamFeeEurApprox === 'number' ? cup.teamFeeEurApprox : 0;
-            total += teamFee + (numPlayers * playerCost) + (numCoaches * coachCost);
-          });
-          const display = document.getElementById('totalCostDisplay');
-          display.textContent = `Total kostnad: ${formatCurrency(total)}`;
+          const playerCostDisplay = document.getElementById('playerCostDisplay');
+          const leaderCostDisplay = document.getElementById('leaderCostDisplay');
+          const teamCostDisplay = document.getElementById('teamCostDisplay');
+          const totalCostDisplay = document.getElementById('totalCostDisplay');
+
+          if (!playerCostDisplay || !leaderCostDisplay || !teamCostDisplay || !totalCostDisplay) {
+            return;
+          }
+
+          if (selectedCups.length === 0) {
+            playerCostDisplay.textContent = '–';
+            leaderCostDisplay.textContent = '–';
+            teamCostDisplay.textContent = '–';
+            totalCostDisplay.textContent = '–';
+            return;
+          }
+
+          const hasPlayerCostData = selectedCups.some(cup => hasNumericCost(cup.playerCostEurApprox));
+          const hasLeaderCostData = selectedCups.some(cup => hasNumericCost(cup.leaderCostEurApprox));
+          const hasTeamCostData = selectedCups.some(cup => hasNumericCost(cup.teamFeeEurApprox));
+
+          const totalPlayerCost = hasPlayerCostData
+            ? selectedCups.reduce((sum, cup) => {
+                const cost = hasNumericCost(cup.playerCostEurApprox) ? cup.playerCostEurApprox : 0;
+                return sum + (numPlayers * cost);
+              }, 0)
+            : 0;
+
+          const totalLeaderCost = hasLeaderCostData
+            ? selectedCups.reduce((sum, cup) => {
+                const cost = hasNumericCost(cup.leaderCostEurApprox) ? cup.leaderCostEurApprox : 0;
+                return sum + (numCoaches * cost);
+              }, 0)
+            : 0;
+
+          const totalTeamCost = hasTeamCostData
+            ? selectedCups.reduce((sum, cup) => {
+                const cost = hasNumericCost(cup.teamFeeEurApprox) ? cup.teamFeeEurApprox : 0;
+                return sum + cost;
+              }, 0)
+            : 0;
+
+          const hasAnyCostData = hasPlayerCostData || hasLeaderCostData || hasTeamCostData;
+          const totalCost = totalPlayerCost + totalLeaderCost + totalTeamCost;
+
+          playerCostDisplay.textContent = hasPlayerCostData ? formatCurrency(totalPlayerCost) : '–';
+          leaderCostDisplay.textContent = hasLeaderCostData ? formatCurrency(totalLeaderCost) : '–';
+          teamCostDisplay.textContent = hasTeamCostData ? formatCurrency(totalTeamCost) : '–';
+          totalCostDisplay.textContent = hasAnyCostData ? formatCurrency(totalCost) : '–';
         }
     // Globala variabler och DOM-element
     let cups = [];
@@ -377,10 +567,10 @@
     const clearMonthFilterBtn = document.getElementById('clearMonthFilter');
     const countryCheckboxes = Array.from(document.querySelectorAll('.country-checkbox'));
     const clearCountryFilterBtn = document.getElementById('clearCountryFilter');
-    const levelSelect = document.getElementById('levelSelect');
-    const maxCostInput = document.getElementById('maxCostInput');
-    const costFilter = document.getElementById('costFilter');
-    const searchInput = document.getElementById('searchInput');
+    const levelCheckboxes = Array.from(document.querySelectorAll('.level-checkbox'));
+    const costCheckboxes = Array.from(document.querySelectorAll('.cost-checkbox'));
+    const clearLevelFilterBtn = document.getElementById('clearLevelFilter');
+    const clearCostFilterBtn = document.getElementById('clearCostFilter');
     const headerCells = Array.from(document.querySelectorAll('th.sortable'));
     const tableBody = document.getElementById('tableBody');
 
@@ -458,10 +648,12 @@
       const selectedCountries = countryCheckboxes
         .filter(cb => cb.checked)
         .map(cb => cb.value);
-      const level = levelSelect.value;
-      const maxCost = maxCostInput.value ? parseFloat(maxCostInput.value) : null;
-      const costAvailability = costFilter.value;
-      const search = normalize(searchInput.value);
+      const selectedLevels = levelCheckboxes
+        .filter(cb => cb.checked)
+        .map(cb => cb.value);
+      const selectedCostModes = costCheckboxes
+        .filter(cb => cb.checked)
+        .map(cb => cb.value);
 
       return cupsArray.filter(cup => {
         if (monthFilterIndices.length > 0) {
@@ -470,21 +662,14 @@
           if (!matches) return false;
         }
         if (selectedCountries.length > 0 && !selectedCountries.includes(cup.country)) return false;
-        if (level && cup.level !== level) return false;
+        if (selectedLevels.length > 0 && !selectedLevels.includes(cup.level)) return false;
 
-        if (costAvailability === "with" && !cupHasAnyCost(cup)) return false;
-        if (costAvailability === "without" && cupHasAnyCost(cup)) return false;
-
-        if (maxCost !== null) {
-          const cost = typeof cup.playerCostEurApprox === "number" ? cup.playerCostEurApprox : null;
-          if (cost === null || cost > maxCost) return false;
-        }
-
-        if (search) {
-          const text = normalize(
-            `${cup.name} ${cup.city || ""} ${cup.country || ""} ${cup.dateText || ""}`
+        if (selectedCostModes.length > 0) {
+          const hasCost = cupHasAnyCost(cup);
+          const costMatches = selectedCostModes.some(mode =>
+            (mode === "with" && hasCost) || (mode === "without" && !hasCost)
           );
-          if (!text.includes(search)) return false;
+          if (!costMatches) return false;
         }
 
         return true;
@@ -624,16 +809,6 @@
     }
 
     function initFilters() {
-      [levelSelect, maxCostInput, costFilter, searchInput].forEach(el => {
-        el.addEventListener("input", () => {
-          renderTable();
-          updateTotalCostDisplay();
-        });
-        el.addEventListener("change", () => {
-          renderTable();
-          updateTotalCostDisplay();
-        });
-      });
       monthCheckboxes.forEach(cb => {
         cb.addEventListener('change', () => {
           renderTable();
@@ -641,6 +816,18 @@
         });
       });
       countryCheckboxes.forEach(cb => {
+        cb.addEventListener('change', () => {
+          renderTable();
+          updateTotalCostDisplay();
+        });
+      });
+      levelCheckboxes.forEach(cb => {
+        cb.addEventListener('change', () => {
+          renderTable();
+          updateTotalCostDisplay();
+        });
+      });
+      costCheckboxes.forEach(cb => {
         cb.addEventListener('change', () => {
           renderTable();
           updateTotalCostDisplay();
@@ -658,6 +845,24 @@
       if (clearCountryFilterBtn) {
         clearCountryFilterBtn.addEventListener('click', () => {
           countryCheckboxes.forEach(cb => {
+            cb.checked = false;
+          });
+          renderTable();
+          updateTotalCostDisplay();
+        });
+      }
+      if (clearLevelFilterBtn) {
+        clearLevelFilterBtn.addEventListener('click', () => {
+          levelCheckboxes.forEach(cb => {
+            cb.checked = false;
+          });
+          renderTable();
+          updateTotalCostDisplay();
+        });
+      }
+      if (clearCostFilterBtn) {
+        clearCostFilterBtn.addEventListener('click', () => {
+          costCheckboxes.forEach(cb => {
             cb.checked = false;
           });
           renderTable();
