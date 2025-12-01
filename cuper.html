@@ -938,7 +938,7 @@
 
     async function loadData() {
       try {
-        const response = await fetch("http://localhost:3000/api/cuper");
+        const response = await fetch("https://cuper-2026.vercel.app/api/cuper");
         cups = await response.json();
         cups.forEach(enrichCupWithMonths);
         updateCupCount(cups.length); // Show total on load
