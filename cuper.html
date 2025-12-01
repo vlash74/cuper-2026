@@ -938,7 +938,7 @@
 
     async function loadData() {
       try {
-        const response = await fetch("cuper_2026_data.json");
+        const response = await fetch("http://localhost:3000/api/cuper");
         cups = await response.json();
         cups.forEach(enrichCupWithMonths);
         updateCupCount(cups.length); // Show total on load
@@ -948,7 +948,7 @@
         tableBody.innerHTML = `
           <tr>
             <td colspan="15" style="color:red;">
-              Kunde inte ladda cuper från <code>cuper_2026_data_cleaned.json</code>. Kontrollera filnamn och sökväg.
+              Kunde inte ladda cuper från API:t. Kontrollera att backend-servern körs.
             </td>
           </tr>
         `;
