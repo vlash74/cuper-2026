@@ -481,11 +481,11 @@
       </div>
       <div class="planning-total">
         <div class="planning-total-line">
-          <span class="planning-total-label">Pris spelare</span>
+          <span class="planning-total-label">Pris per spelare</span>
           <span class="planning-total-value" id="playerCostDisplay">–</span>
         </div>
         <div class="planning-total-line">
-          <span class="planning-total-label">Pris ledare</span>
+          <span class="planning-total-label">Pris per ledare</span>
           <span class="planning-total-value" id="leaderCostDisplay">–</span>
         </div>
         <div class="planning-total-line">
@@ -610,8 +610,11 @@
           const hasAnyCostData = hasPlayerCostData || hasLeaderCostData || hasTeamCostData;
           const totalCost = totalPlayerCost + totalLeaderCost + totalTeamCost;
 
-          playerCostDisplay.textContent = hasPlayerCostData ? formatCurrency(totalPlayerCost) : '–';
-          leaderCostDisplay.textContent = hasLeaderCostData ? formatCurrency(totalLeaderCost) : '–';
+          const perPlayerCost = hasPlayerCostData && numPlayers > 0 ? totalPlayerCost / numPlayers : 0;
+          const perLeaderCost = hasLeaderCostData && numCoaches > 0 ? totalLeaderCost / numCoaches : 0;
+
+          playerCostDisplay.textContent = hasPlayerCostData ? formatCurrency(perPlayerCost) : '–';
+          leaderCostDisplay.textContent = hasLeaderCostData ? formatCurrency(perLeaderCost) : '–';
           teamCostDisplay.textContent = hasTeamCostData ? formatCurrency(totalTeamCost) : '–';
           totalCostDisplay.textContent = hasAnyCostData ? formatCurrency(totalCost) : '–';
         }
