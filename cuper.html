@@ -114,6 +114,32 @@
       border: 1px solid rgba(99, 102, 241, 0.12);
       box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
     }
+    .planning-section {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .planning-toggle-btn {
+      align-self: flex-start;
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(99, 102, 241, 0.35);
+      background: #eef2ff;
+      color: #1e3a8a;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.2s ease, transform 0.2s ease;
+    }
+    .planning-toggle-btn:hover {
+      background: #e0e7ff;
+      transform: translateY(-1px);
+    }
+    .planning-card.collapsed {
+      display: none;
+    }
     .main-content {
       flex: 1;
       display: flex;
@@ -246,7 +272,7 @@
     .planning-card {
       display: flex;
       flex-wrap: wrap;
-      align-items: center;
+      align-items: flex-start;
       justify-content: space-between;
       gap: 16px;
       padding: 16px;
@@ -255,6 +281,11 @@
       background: #ffffff;
       border: 1px solid rgba(148, 163, 184, 0.25);
       box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+    }
+    .planning-left {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
     }
     .planning-inputs {
       display: flex;
@@ -270,6 +301,32 @@
       letter-spacing: 0.03em;
       text-transform: uppercase;
       color: #334155;
+    }
+    .planning-allocation {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding: 12px;
+      border-radius: 8px;
+      background: linear-gradient(180deg, #f9fbff 0%, #f1f4fb 100%);
+      border: 1px solid rgba(99, 102, 241, 0.12);
+    }
+    .planning-allocation-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      color: #1f2937;
+      text-transform: none;
+      letter-spacing: normal;
+      cursor: pointer;
+    }
+    .planning-allocation-label input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: #2563eb;
+      cursor: pointer;
     }
     .planning-control {
       padding: 10px 12px;
@@ -468,24 +525,46 @@
       </div>
       </div>
     </div>
-    <div class="planning-card">
-      <div class="planning-inputs">
-        <label for="numPlayers" class="planning-label">
-          Antal spelare
-          <input type="number" id="numPlayers" class="planning-control" min="0" value="20" />
-        </label>
-        <label for="numCoaches" class="planning-label">
-          Antal ledare
-          <input type="number" id="numCoaches" class="planning-control" min="0" value="4" />
-        </label>
+    <div class="planning-section">
+      <button type="button" id="togglePlanningBtn" class="planning-toggle-btn" aria-expanded="false" aria-controls="planningPanel">Visa kostnadsplanering</button>
+      <div class="planning-card collapsed" id="planningPanel">
+        <div class="planning-left">
+        <div class="planning-inputs">
+          <label for="numPlayers" class="planning-label">
+            Antal spelare
+            <input type="number" id="numPlayers" class="planning-control" min="0" value="20" />
+          </label>
+          <label for="numCoaches" class="planning-label">
+            Antal ledare
+            <input type="number" id="numCoaches" class="planning-control" min="0" value="4" />
+          </label>
+          <label for="budgetPerPlayer" class="planning-label">
+            Budget per spelare
+            <input type="number" id="budgetPerPlayer" class="planning-control" min="0" value="5000" />
+          </label>
+        </div>
+        <div class="planning-allocation">
+          <label class="planning-allocation-label">
+            <input type="checkbox" id="playerCostPaidByPlayers" checked />
+            <span>Spelarkostnad betalas av spelarna</span>
+          </label>
+          <label class="planning-allocation-label">
+            <input type="checkbox" id="leaderCostPaidByPlayers" checked />
+            <span>Ledarkostnad betalas av spelarna</span>
+          </label>
+          <label class="planning-allocation-label">
+            <input type="checkbox" id="teamCostPaidByPlayers" />
+            <span>Lagkostnad betalas av spelarna</span>
+          </label>
+        </div>
       </div>
       <div class="planning-total">
         <div class="planning-total-line">
-          <span class="planning-total-label">Pris per spelare</span>
+          <span class="planning-total-label">Pris spelare</span>
           <span class="planning-total-value" id="playerCostDisplay">–</span>
         </div>
         <div class="planning-total-line">
-          <span class="planning-total-label">Pris per ledare</span>
+          <span class="planning-total-label">Pris ledare</span>
           <span class="planning-total-value" id="leaderCostDisplay">–</span>
         </div>
         <div class="planning-total-line">
@@ -495,6 +574,14 @@
         <div class="planning-total-line planning-total-line--total">
           <span class="planning-total-label">Total kostnad</span>
           <span class="planning-total-value" id="totalCostDisplay">–</span>
+        </div>
+        <div class="planning-total-line planning-total-line--total" style="margin-top: 12px; padding-top: 12px; border-top: 2px solid #e2e8f0;">
+          <span class="planning-total-label">Kostnad per spelare</span>
+          <span class="planning-total-value" id="perPlayerCostDisplay">–</span>
+        </div>
+        <div class="planning-total-line planning-total-line--total">
+          <span class="planning-total-label">Kostnad lagkassa</span>
+          <span class="planning-total-value" id="teamTreasuryCostDisplay">–</span>
         </div>
       </div>
     </div>
@@ -569,8 +656,13 @@
           const leaderCostDisplay = document.getElementById('leaderCostDisplay');
           const teamCostDisplay = document.getElementById('teamCostDisplay');
           const totalCostDisplay = document.getElementById('totalCostDisplay');
+          const perPlayerCostDisplay = document.getElementById('perPlayerCostDisplay');
+          const teamTreasuryCostDisplay = document.getElementById('teamTreasuryCostDisplay');
+          const playerCostPaidByPlayers = document.getElementById('playerCostPaidByPlayers')?.checked || false;
+          const leaderCostPaidByPlayers = document.getElementById('leaderCostPaidByPlayers')?.checked || false;
+          const teamCostPaidByPlayers = document.getElementById('teamCostPaidByPlayers')?.checked || false;
 
-          if (!playerCostDisplay || !leaderCostDisplay || !teamCostDisplay || !totalCostDisplay) {
+          if (!playerCostDisplay || !leaderCostDisplay || !teamCostDisplay || !totalCostDisplay || !perPlayerCostDisplay || !teamTreasuryCostDisplay) {
             return;
           }
 
@@ -579,6 +671,8 @@
             leaderCostDisplay.textContent = '–';
             teamCostDisplay.textContent = '–';
             totalCostDisplay.textContent = '–';
+            perPlayerCostDisplay.textContent = '–';
+            teamTreasuryCostDisplay.textContent = '–';
             return;
           }
 
@@ -610,13 +704,56 @@
           const hasAnyCostData = hasPlayerCostData || hasLeaderCostData || hasTeamCostData;
           const totalCost = totalPlayerCost + totalLeaderCost + totalTeamCost;
 
-          const perPlayerCost = hasPlayerCostData && numPlayers > 0 ? totalPlayerCost / numPlayers : 0;
-          const perLeaderCost = hasLeaderCostData && numCoaches > 0 ? totalLeaderCost / numCoaches : 0;
-
-          playerCostDisplay.textContent = hasPlayerCostData ? formatCurrency(perPlayerCost) : '–';
-          leaderCostDisplay.textContent = hasLeaderCostData ? formatCurrency(perLeaderCost) : '–';
+          playerCostDisplay.textContent = hasPlayerCostData ? formatCurrency(totalPlayerCost) : '–';
+          leaderCostDisplay.textContent = hasLeaderCostData ? formatCurrency(totalLeaderCost) : '–';
           teamCostDisplay.textContent = hasTeamCostData ? formatCurrency(totalTeamCost) : '–';
           totalCostDisplay.textContent = hasAnyCostData ? formatCurrency(totalCost) : '–';
+
+          // Calculate costs paid by players vs team treasury
+          let costPaidByPlayers = 0;
+          let costPaidByTreasury = 0;
+
+          if (hasPlayerCostData) {
+            if (playerCostPaidByPlayers) {
+              costPaidByPlayers += totalPlayerCost;
+            } else {
+              costPaidByTreasury += totalPlayerCost;
+            }
+          }
+
+          if (hasLeaderCostData) {
+            if (leaderCostPaidByPlayers) {
+              costPaidByPlayers += totalLeaderCost;
+            } else {
+              costPaidByTreasury += totalLeaderCost;
+            }
+          }
+
+          if (hasTeamCostData) {
+            if (teamCostPaidByPlayers) {
+              costPaidByPlayers += totalTeamCost;
+            } else {
+              costPaidByTreasury += totalTeamCost;
+            }
+          }
+
+          const perPlayerCost = numPlayers > 0 ? costPaidByPlayers / numPlayers : 0;
+          const budgetPerPlayer = parseInt(document.getElementById('budgetPerPlayer').value, 10) || 0;
+          
+          perPlayerCostDisplay.textContent = hasAnyCostData ? formatCurrency(perPlayerCost) : '–';
+          
+          // Color code based on budget comparison
+          if (hasAnyCostData && budgetPerPlayer > 0) {
+            if (perPlayerCost <= budgetPerPlayer) {
+              perPlayerCostDisplay.style.color = '#059669'; // green
+            } else {
+              perPlayerCostDisplay.style.color = '#dc2626'; // red
+            }
+          } else {
+            perPlayerCostDisplay.style.color = ''; // reset to default
+          }
+          
+          teamTreasuryCostDisplay.textContent = hasAnyCostData ? formatCurrency(costPaidByTreasury) : '–';
         }
     // Globala variabler och DOM-element
     let cups = [];
@@ -874,6 +1011,17 @@
       });
     }
 
+    function initPlanningToggle() {
+      const planningPanel = document.getElementById('planningPanel');
+      const togglePlanningBtn = document.getElementById('togglePlanningBtn');
+      if (!planningPanel || !togglePlanningBtn) return;
+      togglePlanningBtn.addEventListener('click', () => {
+        const isCollapsed = planningPanel.classList.toggle('collapsed');
+        togglePlanningBtn.setAttribute('aria-expanded', (!isCollapsed).toString());
+        togglePlanningBtn.textContent = isCollapsed ? 'Visa kostnadsplanering' : 'Dölj kostnadsplanering';
+      });
+    }
+
     function initFilters() {
       monthCheckboxes.forEach(cb => {
         cb.addEventListener('change', () => {
@@ -937,6 +1085,10 @@
       }
       document.getElementById('numPlayers').addEventListener('input', updateTotalCostDisplay);
       document.getElementById('numCoaches').addEventListener('input', updateTotalCostDisplay);
+      document.getElementById('budgetPerPlayer').addEventListener('input', updateTotalCostDisplay);
+      document.getElementById('playerCostPaidByPlayers')?.addEventListener('change', updateTotalCostDisplay);
+      document.getElementById('leaderCostPaidByPlayers')?.addEventListener('change', updateTotalCostDisplay);
+      document.getElementById('teamCostPaidByPlayers')?.addEventListener('change', updateTotalCostDisplay);
     }
 
     async function loadData() {
@@ -979,6 +1131,7 @@
 
     initSorting();
     initFilterToggle();
+    initPlanningToggle();
     initFilters();
     loadData();
   </script>
